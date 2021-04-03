@@ -9,11 +9,12 @@ namespace LearnDotNetCoreMVC.Outils
 {
     public class RequestAPI
     {
-        public Exception exceptionError
+        private RequestAPI() { }
+        public static Exception exceptionError
         {
             get; set;
         }
-        public HttpClient Initial()
+        public static HttpClient Initial()
         {
             try
             {

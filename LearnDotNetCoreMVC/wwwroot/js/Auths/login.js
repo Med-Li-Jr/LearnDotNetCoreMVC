@@ -1,16 +1,5 @@
-﻿jQuery(function ($) {
-    //initiate dataTables plugin
-    var myTable =
-        $('#dynamic-table')
-            .DataTable({
-                bAutoWidth: false,
-                "aoColumns": [
-                    null, null, null, null, null,
-                    { "bSortable": false }
-                ],
-                "aaSorting": [],
-                select: {
-                    style: 'multi'
-                }
-            });
-})
+﻿$('#ResponseModal').modal('toggle');
+
+let loginContainer = document.getElementById("loginContainer");
+
+loginContainer.style.width = "380px";

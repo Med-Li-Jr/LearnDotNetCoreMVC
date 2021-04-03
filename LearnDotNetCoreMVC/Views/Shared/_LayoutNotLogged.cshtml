@@ -28,7 +28,7 @@
             <div class="main-content">
                 <div class="row">
                     <div class="col-sm-10 col-sm-offset-1">
-                        <div class="login-container" style="width: 800px;">
+                        <div class="login-container" id="loginContainer" style="width: 380px;">
                             <div class="center">
                                 <h1>
                                     <i class="ace-icon fa fa-leaf green"></i>
@@ -56,86 +56,6 @@
     </div>
     <!-- basic scripts -->
     <!--[if !IE]> -->
-
-    <div id="modal-form-error" class="modal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="blue bigger">@ViewData["Title"]</h4>
-                </div>
-
-                <div class="modal-body">
-                    <div class="row">
-
-                        <div class="error-container">
-                            <div class="well">
-                                <h1 class="grey lighter smaller">
-                                    <span class="blue bigger-125">
-                                        <i class="ace-icon fa fa-sitemap"></i>
-                                    </span>
-                                    Error From Request
-                                </h1>
-
-                                <hr />
-                                <h2 class="lighter smaller"> <span class="blue">Message Error : </span> <br /> @ViewData["MessageResponse"]</h2>
-
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-
-                <div class="modal-footer">
-                    <button class="btn btn-sm" data-dismiss="modal">
-                        <i class="ace-icon fa fa-times"></i>
-                        Cancel
-                    </button>
-
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="modal-form-success" class="modal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="blue bigger">@ViewData["Title"]</h4>
-                </div>
-
-                <div class="modal-body">
-                    <div class="row">
-
-                        <div class="error-container">
-                            <div class="well">
-                                <h1 class="grey lighter smaller">
-                                    <span class="blue bigger-125">
-                                        <i class="ace-icon fa fa-sitemap"></i>
-                                    </span>
-                                    Success From Request
-                                </h1>
-
-                                <hr />
-                                <h2 class="lighter smaller"> <span class="blue">Message : </span> <br /> @ViewData["MessageResponse"]</h2>
-
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-
-                <div class="modal-footer">
-                    <button class="btn btn-sm" data-dismiss="modal">
-                        <i class="ace-icon fa fa-times"></i>
-                        Cancel
-                    </button>
-
-                </div>
-            </div>
-        </div>
-    </div>
 
     <script src="~/assets/js/jquery-2.1.4.min.js"></script>
 

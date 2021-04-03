@@ -24,9 +24,53 @@ namespace LearnDotNetCoreMVC.Controllers
 
         public IActionResult Index()
         {
-            return RedirectToRoute("registerForm");
+            return RedirectToRoute("loginForm");
         }
 
+
+        /*********************************** LOGIN ***********************************/
+
+        [HttpGet("/login", Name = "loginForm")]
+        public IActionResult Login()
+        {
+            return View("../Auths/Login");
+        }
+
+
+        // POST api/<HomeController>/5
+        [HttpPost("/login", Name = "loginRequest")]
+        public async Task<IActionResult> Login(User user)
+        {
+            string messageError = null;
+            string HasError = "null";
+            if (ModelState.IsValid)
+            {
+                HttpClient serverAPI = RequestAPI.Initial();
+
+                HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Post, serverAPI.BaseAddress + "auth");
+
+                string json = JsonConvert.SerializeObject(user);
+
+                requestMessage.Content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
+
+                HttpClient http = new HttpClient();
+                HttpResponseMessage reuqestResponseAPI = await http.SendAsync(requestMessage);
+                
+                ResponseAPI responseAPI = JsonConvert.DeserializeObject<ResponseAPI>(reuqestResponseAPI.Content.ReadAsStringAsync().Result);
+
+                if (responseAPI.Success)
+                    HasError = "false";
+                else
+                    HasError = "true";
+
+                messageError = responseAPI.Message;
+
+            }
+            ViewData["HasError"] = HasError;
+            ViewData["MessageResponse"] = messageError;
+
+            return View("../Auths/Login");
+        }
 
 
         /*********************************** DEMANDS ***********************************/
@@ -46,9 +90,7 @@ namespace LearnDotNetCoreMVC.Controllers
             string HasError = "null";
             if (ModelState.IsValid)
             {
-                RequestAPI requestAPI = new RequestAPI();
-
-                HttpClient serverAPI = requestAPI.Initial();
+                HttpClient serverAPI = RequestAPI.Initial();
 
                 HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Post, serverAPI.BaseAddress + "demande");
 
@@ -79,9 +121,8 @@ namespace LearnDotNetCoreMVC.Controllers
 
         public async void sendPost(Demande Demande)
         {
-            RequestAPI requestAPI = new RequestAPI();
 
-            HttpClient serverAPI = requestAPI.Initial();
+            HttpClient serverAPI = RequestAPI.Initial();
 
             HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Post, serverAPI.BaseAddress + "/register");
 
@@ -100,9 +141,7 @@ namespace LearnDotNetCoreMVC.Controllers
             else
             {
                 var errors = JsonConvert.DeserializeObject<ExceptionResponse>(responseAPI.Content.ReadAsStringAsync().Result);
-                ViewData["msgError"] = " //** " + errors.Message + "<br> //** " + requestAPI + "<br> //** " + json + "<br> //** "
-                    + responseAPI.StatusCode + " <br> /*/ " + responseAPI.Content.ReadAsStringAsync().Result + " <br> /*/ "
-                    + responseAPI.RequestMessage;
+         
 
             }
         }
@@ -111,9 +150,7 @@ namespace LearnDotNetCoreMVC.Controllers
         public async void sendGet()
         {
 
-            RequestAPI requestAPI = new RequestAPI();
-
-            HttpClient serverAPI = requestAPI.Initial();
+            HttpClient serverAPI = RequestAPI.Initial();
             string urlApi = "";
             HttpResponseMessage resp = await serverAPI.GetAsync(urlApi);
             var results = "";
