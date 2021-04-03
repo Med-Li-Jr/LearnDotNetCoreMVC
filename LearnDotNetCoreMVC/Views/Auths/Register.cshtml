@@ -1,0 +1,207 @@
+﻿@model LearnDotNetCoreMVC.Models.Entities.Demande
+@{
+    ViewData["Title"] = "Home Page";
+    Layout = "_LayoutNotLogged";
+
+
+    string HasrError = (string)(ViewData["HasError"] ?? "null");
+    string MessageResponse = (string)(ViewData["MessageResponse"] ?? "");
+}
+
+<div id="signup-box" class="signup-box visible widget-box no-border">
+    <div class="widget-body">
+        <div class="widget-main">
+
+
+            <h4 class="header green lighter bigger">
+                <i class="ace-icon fa fa-users blue"></i>
+                Nouvelle Demande d'orgarnisation
+            </h4>
+
+            <div class="space-6"></div>
+            <p> Entrez les différents champs suivant: </p>
+
+            <form method="post" asp-route="registerRequest">
+                <fieldset>
+
+                    <div class="col-sm-6">
+
+                        <label class="block clearfix">
+                            <span class="block input-icon input-icon-right">
+                                <input asp-for="Name" class="form-control" placeholder="Name" />
+                                <i class="ace-icon fa fa-user"></i>
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </span>
+                        </label>
+
+                        <label class="block clearfix">
+                            <span class="block input-icon input-icon-right">
+                                <input asp-for="Affiliation" value="Affiliation" class="form-control" placeholder="Affiliation" />
+                                <i class="ace-icon fa fa-user"></i>
+                                <span asp-validation-for="Affiliation" class="text-danger"></span>
+                            </span>
+                        </label>
+
+                        <label class="block clearfix">
+                            <span class="block input-icon input-icon-right">
+                                <input asp-for="FieldOfActivity" value="FieldOfActivity" class="form-control" placeholder="FieldOfActivity" />
+                                <i class="ace-icon fa fa-user"></i>
+                                <span asp-validation-for="FieldOfActivity" class="text-danger"></span>
+                            </span>
+                        </label>
+
+
+                        <label class="block clearfix">
+                            <span class="block input-icon input-icon-right">
+                                <input asp-for="Adress" value="Adress" class="form-control" placeholder="Adress" />
+                                <i class="ace-icon fa fa-user"></i>
+                                <span asp-validation-for="Adress" class="text-danger"></span>
+                            </span>
+                        </label>
+
+
+                        <label class="block clearfix">
+                            <span class="block input-icon input-icon-right">
+                                <input asp-for="PostalCode" value="PostalCode" class="form-control" placeholder="PostalCode" />
+                                <i class="ace-icon fa fa-user"></i>
+                                <span asp-validation-for="PostalCode" class="text-danger"></span>
+                            </span>
+                        </label>
+
+
+                        <label class="block clearfix">
+                            <span class="block input-icon input-icon-right">
+                                <input asp-for="City" value="City" class="form-control" placeholder="City" />
+                                <i class="ace-icon fa fa-user"></i>
+                                <span asp-validation-for="City" class="text-danger"></span>
+                            </span>
+                        </label>
+
+                        <div class="form-group">
+                            <select class="form-control" id="countrySelect" asp-for="Country">
+                                <option>Tunisia</option>
+                                <option>Côte d'Ivoire</option>
+                                <option>France</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+
+                        <label class="block clearfix">
+                            <span class="block input-icon input-icon-right">
+                                <input asp-for="Email" class="form-control" placeholder="Email" />
+                                <i class="ace-icon fa fa-user"></i>
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </span>
+                        </label>
+
+                        <label class="block clearfix ">
+                            <span class="block input-icon input-icon-right">
+                                <input asp-for="Phone" value="Phone" class="form-control" placeholder="Phone" />
+                                <i class="ace-icon fa fa-user"></i>
+                                <span asp-validation-for="Phone" class="text-danger"></span>
+                            </span>
+                        </label>
+
+
+                        <label class="block clearfix">
+                            <span class="block input-icon input-icon-right">
+                                <i class="ace-icon fa fa-user"></i>
+                                <input asp-for="PersonToContact" value="PersonToContact" class="form-control" placeholder="PersonToContact" />
+                            </span>
+                            <span asp-validation-for="PersonToContact" class="text-danger"></span>
+                        </label>
+
+                        <label class="block clearfix">
+                            <span class="block input-icon input-icon-right">
+                                <i class="ace-icon fa fa-user"></i>
+                                <input asp-for="ContactMail" value="ContactMail" class="form-control" placeholder="ContactMail" />
+                            </span>
+                            <span asp-validation-for="ContactMail" class="text-danger"></span>
+                        </label>
+
+
+                        <label class="block clearfix">
+                            <span class="block input-icon input-icon-right">
+                                <i class="ace-icon fa fa-user"></i>
+
+                                <input asp-for="ContactPhone" value="ContactPhone" class="form-control" placeholder="ContactPhone" />
+                            </span>
+                            <span asp-validation-for="ContactPhone" class="text-danger"></span>
+                        </label>
+
+                        <label class="block clearfix">
+                            <span class="block input-icon input-icon-right">
+                                <i class="ace-icon fa fa-user"></i>
+                                <input asp-for="ContactPosition" value="ContactPosition" class="form-control" placeholder="ContactPosition" />
+                            </span>
+                            <span asp-validation-for="ContactPosition" class="text-danger"></span>
+                        </label>
+
+
+                        <label class=" clearfix" hidden>
+                            <span class="block input-icon input-icon-right">
+                                <input asp-for="RegDemandDate" hidden class="form-control" placeholder="RegDemandDate" />
+                                <i class="ace-icon fa fa-user"></i>
+                                <span asp-validation-for="RegDemandDate" class="text-danger"></span>
+                            </span>
+                        </label>
+
+                        <label class="clearfix" hidden>
+                            <span class="block input-icon input-icon-right">
+                                <input asp-for="RegDemandDecision" hidden class="form-control" placeholder="RegDemandDecision" value="0" />
+                                <i class="ace-icon fa fa-user"></i>
+                                <span asp-validation-for="RegDemandDecision" class="text-danger"></span>
+                            </span>
+                        </label>
+                        <label class="clearfix" hidden>
+                            <span class="block input-icon input-icon-right">
+                                <input asp-for="RegDemandDecisionDate" hidden class="form-control" placeholder="RegDemandDecisionDate" />
+                                <i class="ace-icon fa fa-user"></i>
+                                <span asp-validation-for="RegDemandDecisionDate" class="text-danger"></span>
+                            </span>
+                        </label>
+
+                        <div class="space-14"></div>
+                    </div>
+
+
+
+
+
+
+                    <br />
+                    <br />
+                    <br />
+                    @if (HasrError == "true")
+                    {
+                        <div class="text-danger" style="display: block;">
+                            Error : @MessageResponse
+                        </div>
+
+                    }
+
+                    <div class="space-14"></div>
+
+
+                    <div class="clearfix center">
+
+                        <button type="submit" class="width-65 btn btn-sm btn-success">
+                            <span class="bigger-110">Register</span>
+
+                            <i class="ace-icon fa fa-arrow-right icon-on-right"></i>
+                        </button>
+                    </div>
+
+                </fieldset>
+            </form>
+
+        </div>
+
+    </div><!-- /.widget-body -->
+</div><!-- /.signup-box -->
+
+
+@section Scripts {
+    <script type="text/javascript" src="~/js/Auths/register.js" defer></script>
+}

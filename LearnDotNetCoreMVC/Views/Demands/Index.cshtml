@@ -1,0 +1,132 @@
+﻿@model IEnumerable<LearnDotNetCoreMVC.Models.Entities.Demande>
+@{
+    ViewData["Title"] = "Request Page";
+    string HasrError = (string)(ViewData["HasError"] ?? "false");
+    string MessageResponse = (string)(ViewData["MessageResponse"] ?? "pas d'erreur");
+
+}
+
+<div class="main-content">
+    <div class="main-content-inner">
+        <div class="breadcrumbs ace-save-state" id="breadcrumbs">
+            <ul class="breadcrumb">
+                <li>
+                    <i class="ace-icon fa fa-home home-icon"></i>
+                    <a href="#">Home</a>
+                </li>
+                <li class="active">Demandes Organisations</li>
+            </ul><!-- /.breadcrumb -->
+
+        </div>
+
+        <div class="page-content">
+
+            <div class="page-header">
+                <h1>
+                    Dashboard Demandes
+                </h1>
+            </div><!-- /.page-header -->
+
+            <div class="row">
+                <div class="col-xs-12">
+                    <!-- PAGE CONTENT BEGINS -->
+                    <!-- div.dataTables_borderWrap -->
+                    @if (!HasrError.Equals("true"))
+                    {
+                        <div>
+                            <table id="dynamic-table" class="table table-striped table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th class="hidden-480">
+                                            <i class="ace-icon fa fa-clock-o bigger-110 hidden-480"></i>
+                                            Date Demande
+                                        </th>
+                                        <th>Organisation</th>
+                                        <th>Affiliation</th>
+                                        <th>Email</th>
+                                        <th class="hidden-480">Status</th>
+
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody id="tbodyListeDemande">
+
+                                    @{
+                                        foreach (var organization in Model)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @organization.RegDemandDate
+                                                </td>
+                                                <td>
+                                                    <a asp-route="requestsDetail" asp-route-id="@organization.ID">@organization.Name</a>
+                                                </td>
+                                                <td>
+                                                    @organization.Affiliation
+                                                </td>
+                                                <td>
+                                                    @organization.Email
+                                                </td>
+                                                <td class="hidden-480">
+                                                    @if (organization.RegDemandDecision.Equals("attends"))
+                                                    {
+                                                        <span class="label label-sm label-warning"> @organization.RegDemandDecision</span>
+                                                    }
+                                                    else@if (organization.RegDemandDecision.Equals("accepte"))
+                                                    {
+                                                        <span class="label label-sm label-success">@organization.RegDemandDecision</span>
+                                                    }
+                                                    else@if (organization.RegDemandDecision.Equals("refuse"))
+                                                    {
+                                                        <span class="label label-sm label-danger">@organization.RegDemandDecision</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="label label-sm">pas de decision </span>
+                                                    }
+
+                                                </td>
+                                                <td>
+                                                    <div>
+                                                        <a class="blue" asp-route="requestsDetail" asp-route-id="@organization.ID">
+                                                            <i class="ace-icon fa fa-search-plus bigger-130"></i>
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="error-container">
+                            <div class="well">
+                                <h1 class="grey lighter smaller">
+                                    <span class="blue bigger-125">
+                                        <i class="ace-icon fa fa-sitemap"></i>
+                                    </span>
+                                    @MessageResponse
+                                </h1>
+
+                                <hr />
+
+                            </div>
+                        </div>
+                    }
+
+                    <!-- PAGE CONTENT ENDS -->
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+        </div><!-- /.page-content -->
+    </div>
+</div><!-- /.main-content -->
+<!--- DIVISER EN DEUX-->
+
+@section Scripts {
+    <script type="text/javascript" src="~/js/Demands/indexDemande.js" defer></script>
+}

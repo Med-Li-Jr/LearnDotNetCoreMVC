@@ -1,0 +1,373 @@
+﻿@model LearnDotNetCoreMVC.Models.Entities.Demande
+@{
+    ViewData["Title"] = "Detail Request Page";
+
+    string textColorDecision = "text-warning";
+    if (Model != null)
+    {
+        if (Model.RegDemandDecision.Equals("attends"))
+        {
+            textColorDecision = " text-warning";
+        }
+        else if (Model.RegDemandDecision.Equals("accepte"))
+        {
+            textColorDecision = "text-success";
+        }
+        else if (Model.RegDemandDecision.Equals("refuse"))
+        {
+            textColorDecision = "text-danger";
+        }
+
+    }
+
+    string HasrError = (string)(ViewData["HasError"] ?? "false");
+    string MessageResponse = (string)(ViewData["MessageResponse"] ?? "pas d'erreur");
+}
+<div class="main-content">
+    <div class="main-content-inner">
+        <div style="display: none">
+            <span href="#modal-form" data-toggle="modal" role="button" id="showModal"> </span>
+        </div>
+
+        <div class="page-content">
+
+            <div class="page-header header">
+                <h1>
+                    Detail Demandes
+                </h1>
+
+            </div><!-- /.page-header -->
+
+            @if (!HasrError.Equals("true"))
+            {
+                <div class="row">
+                    <div class="col-xs-12">
+                        <!-- PAGE CONTENT BEGINS -->
+                        <!-- div.dataTables_borderWrap -->
+
+
+                        <div class="col-xs-12 col-sm-12">
+
+                            <div class="pull-left">
+                                <h4>
+                                    <span style="color: black"> @Model.Name.ToUpper() : </span>
+                                    <span class=" @textColorDecision "> @Model.RegDemandDecision </span>
+                                </h4>
+                            </div>
+                            <div class="pull-right">
+
+                                @if (!Model.RegDemandDecision.Equals("accepte"))
+                                {
+                                    <form method="post" asp-route="response" asp-route-id="@Model.ID" asp-route-mAction="accepte" style="display: inline">
+                                        <button type="submit" class="btn btn-sm btn-success">
+                                            <i class="ace-icon fa fa-check"></i> Accepter
+                                        </button>
+                                    </form>
+                                }
+                                @if (Model.RegDemandDecision.Equals("attends"))
+                                {
+
+                                    <button class="btn btn-sm" onclick="refuserModal('@Model.ID')">
+                                        <i class="ace-icon fa fa-times"></i>
+                                        Refuser
+                                    </button>
+                                }
+                                <button class="btn btn-sm btn-danger" disabled onclick="deleteModal('@Model.ID')">
+                                    <i class="ace-icon fa fa-trash-o"></i>
+                                    Supprimer
+                                </button>
+
+                            </div>
+
+                        </div>
+                        <form class="form-horizontal">
+                            <div class="col-xs-12 col-sm-12 widget-container-col" id="widget-container-col-1">
+                                <div class="widget-box" id="widget-box-1">
+                                    <div class="widget-header">
+                                        <h5 class="widget-title">Informations Demandes</h5>
+
+                                    </div>
+
+                                    <div class="widget-body">
+                                        <div class="widget-main">
+                                            <div class="row">
+
+                                                <div class="col-sm-6">
+
+                                                    <div class="form-group">
+                                                        <label class="col-sm-3 control-label no-padding-right" for="Name" asp-for="Name">  Name </label>
+
+                                                        <div class="col-sm-9">
+                                                            <input type="text" readonly asp-for="Name" placeholder="Name" class="col-xs-11 col-sm-11" />
+                                                        </div>
+
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label class="col-sm-3 control-label no-padding-right" for="Affiliation" asp-for="Affiliation"> </label>
+
+                                                        <div class="col-sm-9">
+                                                            <input type="text" readonly asp-for="Affiliation" placeholder="Affiliation" class="col-xs-11 col-sm-11" />
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-sm-3 control-label no-padding-right" for="FieldOfActivity" asp-for="FieldOfActivity"> </label>
+
+                                                        <div class="col-sm-9">
+                                                            <input type="text" readonly asp-for="FieldOfActivity" placeholder="FieldOfActivity" class="col-xs-11 col-sm-11" />
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-sm-3 control-label no-padding-right" for="Adress " asp-for="Adress "> </label>
+
+                                                        <div class="col-sm-9">
+                                                            <input type="text" readonly asp-for="Adress" placeholder="Adress" class="col-xs-11 col-sm-11" />
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-sm-3 control-label no-padding-right" for="PostalCode" asp-for="PostalCode"> </label>
+
+                                                        <div class="col-sm-9">
+                                                            <input type="text" readonly asp-for="PostalCode" placeholder="PostalCode" class="col-xs-11 col-sm-11" />
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-sm-3 control-label no-padding-right" for="City" asp-for="City"> </label>
+
+                                                        <div class="col-sm-9">
+                                                            <input type="text" readonly asp-for="City" placeholder="City" class="col-xs-11 col-sm-11" />
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-sm-3 control-label no-padding-right" for="Country" asp-for="Country"> </label>
+
+                                                        <div class="col-sm-9">
+                                                            <input type="text" readonly asp-for="Country" placeholder="Country" class="col-xs-11 col-sm-11" />
+                                                        </div>
+
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label class="col-sm-3 control-label no-padding-right" for="RegDemandDecision" asp-for="RegDemandDecision"> </label>
+
+                                                        <div class="col-sm-9">
+                                                            <input type="text" readonly asp-for="RegDemandDecision" placeholder="RegDemandDecision" class="col-xs-11 col-sm-11" />
+                                                        </div>
+
+                                                    </div>
+                                                    @if (!Model.RegDemandDecision.Equals("attends"))
+                                                    {
+                                                        <div>
+                                                            <div class="form-group">
+                                                                <label class="col-sm-3 control-label no-padding-right" for="RegDemandDecisionDate" asp-for="RegDemandDecisionDate"> </label>
+
+                                                                <div class="col-sm-9">
+                                                                    <input type="text" readonly asp-for="RegDemandDecisionDate" placeholder="RegDemandDecisionDate" class="col-xs-11 col-sm-11" />
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="form-group">
+                                                        <label class="col-sm-3 control-label no-padding-right" for="Email" asp-for="Email"> </label>
+
+                                                        <div class="col-sm-9">
+                                                            <input type="text" readonly asp-for="Email" placeholder="Email" class="col-xs-11 col-sm-11" />
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-sm-3 control-label no-padding-right" for="Phone" asp-for="Phone"> </label>
+
+                                                        <div class="col-sm-9">
+                                                            <input type="text" readonly asp-for="Phone" placeholder="Phone" class="col-xs-11 col-sm-11" />
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-sm-3 control-label no-padding-right" for="PersonToContact" asp-for="PersonToContact"> </label>
+
+                                                        <div class="col-sm-9">
+                                                            <input type="text" readonly asp-for="PersonToContact" placeholder="PersonToContact" class="col-xs-11 col-sm-11" />
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-sm-3 control-label no-padding-right" for="ContactMail" asp-for="ContactMail"> </label>
+
+                                                        <div class="col-sm-9">
+                                                            <input type="text" readonly asp-for="ContactMail" placeholder="ContactMail" class="col-xs-11 col-sm-11" />
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-sm-3 control-label no-padding-right" for="ContactPhone" asp-for="ContactPhone"> </label>
+
+                                                        <div class="col-sm-9">
+                                                            <input type="text" readonly asp-for="ContactPhone" placeholder="ContactPhone" class="col-xs-11 col-sm-11" />
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-sm-3 control-label no-padding-right" for="ContactPosition" asp-for="ContactPosition"> </label>
+
+                                                        <div class="col-sm-9">
+                                                            <input type="text" readonly asp-for="ContactPosition" placeholder="ContactPosition" class="col-xs-11 col-sm-11" />
+                                                        </div>
+
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label class="col-sm-3 control-label no-padding-right" for="RegDemandDate" asp-for="RegDemandDate"> </label>
+
+                                                        <div class="col-sm-9">
+                                                            <input type="text" readonly asp-for="RegDemandDate" placeholder="RegDemandDate" class="col-xs-11 col-sm-11" />
+                                                        </div>
+
+                                                    </div>
+
+                                                    @if (Model.RegDemandDecision.Equals("refuse"))
+                                                    {
+                                                        <div>
+                                                            <div class="form-group">
+                                                                <label class="col-sm-3 control-label no-padding-right" for="RegDecisionComments" asp-for="RegDecisionComments"></label>
+
+                                                                <div class="col-sm-9">
+                                                                    <textarea readonly disabled asp-for="RegDecisionComments" placeholder="RegDecisionComments" class="col-xs-11 col-sm-11" style="padding-left: 1%; min-height:85px;"></textarea>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    }
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </form><!-- PAGE CONTENT ENDS -->
+                        <!-- PAGE CONTENT ENDS -->
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            }
+            else
+            {
+                <div class="error-container">
+                    <div class="well">
+                        <h1 class="grey lighter smaller">
+                            <span class="blue bigger-125">
+                                <i class="ace-icon fa fa-sitemap"></i>
+                            </span>
+                            @MessageResponse
+                        </h1>
+
+                        <hr />
+
+                    </div>
+                </div>
+            }
+
+            @if (!HasrError.Equals("true"))
+            {
+                <div id="modal-form-confirm-refuser" class="modal" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="blue">Confirm Delete</h4>
+                            </div>
+
+                            <div class="modal-body">
+                                <div class="row">
+
+                                    <div class="error-container">
+                                        <div class="well">
+                                            <h2 class="lighter smaller center"> <span class="blue">Quel est le motif du Refus ?</span></h2>
+                                            <form method="post" asp-route="response" asp-route-id="@Model.ID" asp-route-mAction="refuse">
+
+                                                <div>
+                                                    <div class="form-group">
+                                                        <div class="col-sm-12">
+                                                            <textarea style="margin-bottom: 2%; min-height: 100px" name="comments" placeholder="motif de refus" class="col-xs-12 col-sm-12"></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div style="margin-left: 2%;">
+                                                    <div class="form-group">
+
+                                                        <button class="btn " data-dismiss="modal">
+                                                            <i class="ace-icon fa fa-times"></i>
+                                                            No
+                                                        </button>
+
+                                                        <button class="btn btn-danger" type="submit">
+                                                            <i class="ace-icon fa fa-check"></i>
+                                                            Yes
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="modal-footer" id="footerModalRefuser">
+                                <form>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <!--    <div id="modal-form-confirm-delete" class="modal" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="blue">Confirm Delete</h4>
+                            </div>
+
+                            <div class="modal-body">
+                                <div class="row">
+
+                                    <div class="error-container">
+                                        <div class="well">
+                                            <h2 class="lighter smaller"> <span class="blue">Do you want to delete ?</span></h2>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="modal-footer" id="footerModal">
+                                <form>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+
+        </div><!-- /.page-content -->
+
+    </div>
+</div><!-- /.main-content -->
+
+
+
+@section Scripts {
+    <script type="text/javascript" src="~/js/Demands/detailDemande.js" defer></script>
+}
