@@ -45,3 +45,4 @@ D:\LearningPaths\DotNet\LearnDotNetCoreMVC\LearnDotNetCoreMVC\obj\Debug\net5.0\L
 D:\LearningPaths\DotNet\LearnDotNetCoreMVC\LearnDotNetCoreMVC\obj\Debug\net5.0\LearnDotNetCoreMVC.genruntimeconfig.cache
 D:\LearningPaths\DotNet\LearnDotNetCoreMVC\LearnDotNetCoreMVC\obj\Debug\net5.0\LearnDotNetCoreMVC.csproj.CopyComplete
 D:\LearningPaths\DotNet\LearnDotNetCoreMVC\LearnDotNetCoreMVC\obj\Debug\net5.0\Razor\Views\Shared\_LayoutNotLogged.cshtml.g.cs
+D:\LearningPaths\DotNet\LearnDotNetCoreMVC\LearnDotNetCoreMVC\bin\Debug\net5.0\Newtonsoft.Json.dll

@@ -1,11 +1,14 @@
 ﻿using LearnDotNetCoreMVC.Models;
 using LearnDotNetCoreMVC.Models.Entities;
+using LearnDotNetCoreMVC.Outils;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace LearnDotNetCoreMVC.Controllers
@@ -25,11 +28,110 @@ namespace LearnDotNetCoreMVC.Controllers
         }
 
 
+
+        /*********************************** DEMANDS ***********************************/
+
         [HttpGet("/register", Name = "registerForm")]
         public IActionResult Register()
         {
             return View("../Auths/Register");
         }
+
+
+        // POST api/<HomeController>/5
+        [HttpPost("/register", Name = "registerRequest")]
+        public async Task<IActionResult> Register(Demande Demande)
+        {
+            string messageError = null;
+            string HasError = "null";
+            if (ModelState.IsValid)
+            {
+                RequestAPI requestAPI = new RequestAPI();
+
+                HttpClient serverAPI = requestAPI.Initial();
+
+                HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Post, serverAPI.BaseAddress + "demande");
+
+                string json = JsonConvert.SerializeObject(Demande);
+
+                requestMessage.Content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
+
+                HttpClient http = new HttpClient();
+                HttpResponseMessage reuqestResponseAPI = await http.SendAsync(requestMessage);
+                ResponseAPI responseAPI = JsonConvert.DeserializeObject<ResponseAPI>(reuqestResponseAPI.Content.ReadAsStringAsync().Result);
+                if (responseAPI.Success)
+                    HasError = "false";
+                else
+                    HasError = "true";
+
+                messageError = responseAPI.Message;
+
+            }
+            ViewData["HasError"] = HasError;
+            ViewData["MessageResponse"] = messageError;
+
+            return View("../Auths/Register", Demande);
+        }
+
+
+
+
+
+        public async void sendPost(Demande Demande)
+        {
+            RequestAPI requestAPI = new RequestAPI();
+
+            HttpClient serverAPI = requestAPI.Initial();
+
+            HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Post, serverAPI.BaseAddress + "/register");
+
+            string json = JsonConvert.SerializeObject(Demande);
+
+            requestMessage.Content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
+
+            HttpClient http = new HttpClient();
+            HttpResponseMessage responseAPI = await http.SendAsync(requestMessage);
+
+            if (responseAPI.IsSuccessStatusCode)
+            {
+                ViewData["msgError"] = requestMessage + "<br> /*/ " + responseAPI.StatusCode + " <br> /*/ "
+                    + responseAPI.Content.ReadAsStringAsync().Result + " <br> /*/ " + responseAPI.RequestMessage;
+            }
+            else
+            {
+                var errors = JsonConvert.DeserializeObject<ExceptionResponse>(responseAPI.Content.ReadAsStringAsync().Result);
+                ViewData["msgError"] = " //** " + errors.Message + "<br> //** " + requestAPI + "<br> //** " + json + "<br> //** "
+                    + responseAPI.StatusCode + " <br> /*/ " + responseAPI.Content.ReadAsStringAsync().Result + " <br> /*/ "
+                    + responseAPI.RequestMessage;
+
+            }
+        }
+
+
+        public async void sendGet()
+        {
+
+            RequestAPI requestAPI = new RequestAPI();
+
+            HttpClient serverAPI = requestAPI.Initial();
+            string urlApi = "";
+            HttpResponseMessage resp = await serverAPI.GetAsync(urlApi);
+            var results = "";
+            if (resp.IsSuccessStatusCode)
+            {
+                results = resp.Content.ReadAsStringAsync().Result;
+                Demande demande = JsonConvert.DeserializeObject<Demande>(results);
+            }
+            else
+            {
+                ViewData["msgError"] = resp.StatusCode + " // " + resp.Content.ReadAsStringAsync().Result + " // " + resp.RequestMessage;
+            }
+        }
+
+
+
+
+
 
 
         [HttpGet("/demands", Name = "dashboardDemand")]

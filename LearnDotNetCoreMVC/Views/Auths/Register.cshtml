@@ -8,6 +8,27 @@
     string MessageResponse = (string)(ViewData["MessageResponse"] ?? "");
 }
 
+@if (MessageResponse.Length > 0)
+{
+    <!-- Modal -->
+    <div class="modal fade" id="ResponseModal" tabindex="-1" role="dialog" data-backdrop="static" aria-labelledby="ResponseModalTitle" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="blue bigger">Response</h4>
+                </div>
+                <div class="modal-body">
+                   <h5>@MessageResponse</h5> 
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
 <div id="signup-box" class="signup-box visible widget-box no-border">
     <div class="widget-body">
         <div class="widget-main">
@@ -15,7 +36,7 @@
 
             <h4 class="header green lighter bigger">
                 <i class="ace-icon fa fa-users blue"></i>
-                Nouvelle Demande d'orgarnisation
+                Nouvelle Demande d'organisation
             </h4>
 
             <div class="space-6"></div>
@@ -173,13 +194,7 @@
                     <br />
                     <br />
                     <br />
-                    @if (HasrError == "true")
-                    {
-                        <div class="text-danger" style="display: block;">
-                            Error : @MessageResponse
-                        </div>
 
-                    }
 
                     <div class="space-14"></div>
 
@@ -197,7 +212,6 @@
             </form>
 
         </div>
-
     </div><!-- /.widget-body -->
 </div><!-- /.signup-box -->
 

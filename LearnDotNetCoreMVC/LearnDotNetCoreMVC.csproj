@@ -147,4 +147,8 @@
     <None Include="wwwroot\assets\swf\flashExport.swf" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+  </ItemGroup>
+
 </Project>
