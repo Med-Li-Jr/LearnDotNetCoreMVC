@@ -45,3 +45,4 @@ D:\LearningPaths\DotNet\LearnDotNetCoreMVC\LearnDotNetCoreMVC\obj\Debug\net5.0\L
 D:\LearningPaths\DotNet\LearnDotNetCoreMVC\LearnDotNetCoreMVC\obj\Debug\net5.0\ref\LearnDotNetCoreMVC.dll
 D:\LearningPaths\DotNet\LearnDotNetCoreMVC\LearnDotNetCoreMVC\obj\Debug\net5.0\LearnDotNetCoreMVC.pdb
 D:\LearningPaths\DotNet\LearnDotNetCoreMVC\LearnDotNetCoreMVC\obj\Debug\net5.0\LearnDotNetCoreMVC.genruntimeconfig.cache
+D:\LearningPaths\DotNet\LearnDotNetCoreMVC\LearnDotNetCoreMVC\obj\Debug\net5.0\LearnDotNetCoreMVC.csprojAssemblyReference.cache

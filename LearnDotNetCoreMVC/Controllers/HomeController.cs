@@ -43,33 +43,42 @@ namespace LearnDotNetCoreMVC.Controllers
         {
             string messageError = null;
             string HasError = "null";
-            if (ModelState.IsValid)
+            try
             {
-                HttpClient serverAPI = RequestAPI.Initial();
+                if (ModelState.IsValid)
+                {
+                    HttpClient serverAPI = RequestAPI.Initial();
 
-                HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Post, serverAPI.BaseAddress + "auth");
+                    HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Post, serverAPI.BaseAddress + "auth");
 
-                string json = JsonConvert.SerializeObject(user);
+                    string json = JsonConvert.SerializeObject(user);
 
-                requestMessage.Content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
+                    requestMessage.Content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
 
-                HttpClient http = new HttpClient();
-                HttpResponseMessage reuqestResponseAPI = await http.SendAsync(requestMessage);
-                
-                ResponseAPI responseAPI = JsonConvert.DeserializeObject<ResponseAPI>(reuqestResponseAPI.Content.ReadAsStringAsync().Result);
+                    HttpClient http = new HttpClient();
+                    HttpResponseMessage reuqestResponseAPI = await http.SendAsync(requestMessage);
 
-                if (responseAPI.Success)
-                    HasError = "false";
-                else
-                    HasError = "true";
+                    ResponseAPI responseAPI = JsonConvert.DeserializeObject<ResponseAPI>(reuqestResponseAPI.Content.ReadAsStringAsync().Result);
 
-                messageError = responseAPI.Message;
+                    if (responseAPI.Success)
+                        HasError = "false";
+                    else
+                        HasError = "true";
+
+                    messageError = responseAPI.Message;
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+                HasError = "false";
+                messageError = ex.Message;
 
             }
             ViewData["HasError"] = HasError;
             ViewData["MessageResponse"] = messageError;
-
-            return View("../Auths/Login");
+            return View("../Auths/Login", user);
         }
 
 
@@ -116,6 +125,67 @@ namespace LearnDotNetCoreMVC.Controllers
         }
 
 
+        /*********************************** MANAGE DEMANDS SUPER ADMIN ***********************************/
+
+
+        [HttpGet("/demands", Name = "dashboardDemand")]
+        public async Task<IActionResult> IndexDemand()
+        {
+            string messageError = null;
+            List<Demande> AllDemands = null;
+            string HasError = "null";
+            try
+            {
+
+                HttpClient serverAPI = RequestAPI.Initial();
+                string urlApi = serverAPI.BaseAddress + "demande/all";
+                HttpResponseMessage reuqestResponseAPI = await serverAPI.GetAsync(urlApi);
+                var results = reuqestResponseAPI.Content.ReadAsStringAsync().Result;
+                ResponseAPI responseAPI = JsonConvert.DeserializeObject<ResponseAPI>(results);
+                 if (responseAPI.Success)
+                {
+                    HasError = "false";
+                    AllDemands = JsonConvert.DeserializeObject<List<Demande>>(JsonConvert.SerializeObject(responseAPI.Data));
+                }
+                else
+                {
+                    HasError = "true";
+                }
+                messageError = responseAPI.Message;
+
+            }
+            catch (Exception ex)
+            {
+                HasError = "true";
+                messageError = ex.Message;
+            }
+
+
+            ViewData["HasError"] = HasError;
+            ViewData["MessageResponse"] = messageError;
+            ViewData["menuActive"] = "Demandes";
+
+            return View("../Demands/Index", AllDemands);
+        }
+
+
+
+
+        [HttpGet("/organizations", Name = "dashboardOrganization")]
+        public async Task<IActionResult> IndexOrganization()
+        {
+
+            string messageError = null;
+            string HasError = "null";
+
+            List<Organization> AllOrganization = new List<Organization>();
+
+            ViewData["HasError"] = HasError;
+            ViewData["MessageResponse"] = messageError;
+            ViewData["menuActive"] = "Organisations";
+
+            return View("../Organizations/Index", AllOrganization);
+        }
 
 
 
@@ -141,7 +211,7 @@ namespace LearnDotNetCoreMVC.Controllers
             else
             {
                 var errors = JsonConvert.DeserializeObject<ExceptionResponse>(responseAPI.Content.ReadAsStringAsync().Result);
-         
+
 
             }
         }
@@ -163,44 +233,6 @@ namespace LearnDotNetCoreMVC.Controllers
             {
                 ViewData["msgError"] = resp.StatusCode + " // " + resp.Content.ReadAsStringAsync().Result + " // " + resp.RequestMessage;
             }
-        }
-
-
-
-
-
-
-
-        [HttpGet("/demands", Name = "dashboardDemand")]
-        public IActionResult IndexDemand()
-        {
-            string messageError = null;
-            string HasError = "null";
-
-            List<Demande> AllDemands = new List<Demande>();
-
-            ViewData["HasError"] = HasError;
-            ViewData["MessageResponse"] = messageError;
-            ViewData["menuActive"] = "Demandes";
-
-            return View("../Demands/Index", AllDemands);
-        }
-
-
-        [HttpGet("/organizations", Name = "dashboardOrganization")]
-        public IActionResult IndexOrganization()
-        {
-
-            string messageError = null;
-            string HasError = "null";
-
-            List<Organization> AllOrganization = new List<Organization>();
-
-            ViewData["HasError"] = HasError;
-            ViewData["MessageResponse"] = messageError;
-            ViewData["menuActive"] = "Organisations";
-
-            return View("../Organizations/Index",AllOrganization);
         }
 
 
