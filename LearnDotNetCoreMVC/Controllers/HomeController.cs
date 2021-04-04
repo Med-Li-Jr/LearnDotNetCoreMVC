@@ -276,24 +276,50 @@ namespace LearnDotNetCoreMVC.Controllers
 
 
 
+        /*********************************** MANAGE ORGANIZATIONS SUPER ADMIN ***********************************/
+
+
         [HttpGet("/organizations", Name = "dashboardOrganization")]
         public async Task<IActionResult> IndexOrganization()
         {
-
             string messageError = null;
+            List<Organization> AllOrganizations = null;
             string HasError = "null";
+            try
+            {
 
-            List<Organization> AllOrganization = new List<Organization>();
+                HttpClient serverAPI = RequestAPI.Initial();
+
+                string urlApi = serverAPI.BaseAddress + "organization/all";
+
+                HttpResponseMessage reuqestResponseAPI = await serverAPI.GetAsync(urlApi);
+                var results = reuqestResponseAPI.Content.ReadAsStringAsync().Result;
+                ResponseAPI responseAPI = JsonConvert.DeserializeObject<ResponseAPI>(results);
+                if (responseAPI.Success)
+                {
+                    HasError = "false";
+                    AllOrganizations = JsonConvert.DeserializeObject<List<Organization>>(JsonConvert.SerializeObject(responseAPI.Data));
+                }
+                else
+                {
+                    HasError = "true";
+                }
+                messageError = responseAPI.Message;
+
+            }
+            catch (Exception ex)
+            {
+                HasError = "true";
+                messageError = ex.Message;
+            }
+
 
             ViewData["HasError"] = HasError;
             ViewData["MessageResponse"] = messageError;
             ViewData["menuActive"] = "Organisations";
 
-            return View("../Organizations/Index", AllOrganization);
+            return View("../Organizations/Index", AllOrganizations);
         }
-
-
-
         public async void sendPost(Demande Demande)
         {
 
