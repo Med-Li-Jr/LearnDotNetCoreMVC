@@ -46,41 +46,93 @@
                         <!-- div.dataTables_borderWrap -->
 
 
-                        <div class="col-xs-12 col-sm-12">
+                        <form class="form-horizontal" method="post" asp-route="demandResponse" asp-route-value="@Model.ID" style="display: inline">
 
-                            <div class="pull-left">
-                                <h4>
-                                    <span style="color: black"> @Model.Name.ToUpper() : </span>
-                                    <span class=" @textColorDecision "> @Model.RegDemandDecision </span>
-                                </h4>
-                            </div>
-                            <div class="pull-right">
+                            @if (!HasrError.Equals("true"))
+                            {
+                                <div id="modal-form-confirm-refuser" data-backdrop="static" class="modal" tabindex="-1">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                <h4 class="blue">Confirm Delete</h4>
+                                            </div>
 
-                                @if (!Model.RegDemandDecision.Equals("accepte"))
-                                {
-                                    <form method="post" asp-route="response" asp-route-id="@Model.ID" asp-route-mAction="accepte" style="display: inline">
-                                        <button type="submit" class="btn btn-sm btn-success">
+                                            <div class="modal-body">
+                                                <div class="row">
+
+                                                    <div class="error-container">
+                                                        <div class="well">
+                                                            <h2 class="lighter smaller center"> <span class="blue">Quel est le motif du Refus ?</span></h2>
+
+                                                            <div>
+                                                                <div class="form-group">
+                                                                    <div class="col-sm-12">
+                                                                        <textarea style="margin-bottom: 2%; min-height: 100px" asp-for="RegDecisionComments" placeholder="motif de refus" class="col-xs-12 col-sm-12"></textarea>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div style="margin-left: 2%;">
+                                                                <div class="form-group">
+
+                                                                    <button class="btn " data-dismiss="modal">
+                                                                        <i class="ace-icon fa fa-times"></i>
+                                                                        No
+                                                                    </button>
+
+                                                                    <button class="btn btn-danger" type="submit" asp-route-mAction="refuse">
+                                                                        <i class="ace-icon fa fa-check"></i>
+                                                                        Yes
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+                                            <div class="modal-footer">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+
+                            <div class="col-xs-12 col-sm-12">
+
+                                <div class="pull-left">
+                                    <h4>
+                                        <span style="color: black"> @Model.Name.ToUpper() : </span>
+                                        <span class=" @textColorDecision "> @Model.RegDemandDecision </span>
+                                    </h4>
+                                </div>
+                                <div class="pull-right">
+
+                                    @if (!Model.RegDemandDecision.Equals("accepte"))
+                                    {
+                                        <button asp-route-mAction="accepte" type="submit" class="btn btn-sm btn-success">
                                             <i class="ace-icon fa fa-check"></i> Accepter
                                         </button>
-                                    </form>
-                                }
-                                @if (Model.RegDemandDecision.Equals("attends"))
-                                {
+                                    }
+                                    @if (Model.RegDemandDecision.Equals("attends"))
+                                    {
 
-                                    <button class="btn btn-sm" onclick="refuserModal('@Model.ID')">
-                                        <i class="ace-icon fa fa-times"></i>
-                                        Refuser
-                                    </button>
-                                }
-                                <button class="btn btn-sm btn-danger" disabled onclick="deleteModal('@Model.ID')">
-                                    <i class="ace-icon fa fa-trash-o"></i>
-                                    Supprimer
-                                </button>
+                                        <a class="btn btn-sm" onclick="refuserModal('@Model.ID')">
+                                            <i class="ace-icon fa fa-times"></i>
+                                            Refuser
+                                        </a>
+                                    }
+                                    <!--
+            <button class="btn btn-sm btn-danger" disabled onclick="deleteModal('@Model.ID')">
+                <i class="ace-icon fa fa-trash-o"></i>
+                Supprimer
+            </button>
+            -->
+                                </div>
 
                             </div>
-
-                        </div>
-                        <form class="form-horizontal">
+                            
                             <div class="col-xs-12 col-sm-12 widget-container-col" id="widget-container-col-1">
                                 <div class="widget-box" id="widget-box-1">
                                     <div class="widget-header">
@@ -278,88 +330,6 @@
                 </div>
             }
 
-            @if (!HasrError.Equals("true"))
-            {
-                <div id="modal-form-confirm-refuser" class="modal" tabindex="-1">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                <h4 class="blue">Confirm Delete</h4>
-                            </div>
-
-                            <div class="modal-body">
-                                <div class="row">
-
-                                    <div class="error-container">
-                                        <div class="well">
-                                            <h2 class="lighter smaller center"> <span class="blue">Quel est le motif du Refus ?</span></h2>
-                                            <form method="post" asp-route="response" asp-route-id="@Model.ID" asp-route-mAction="refuse">
-
-                                                <div>
-                                                    <div class="form-group">
-                                                        <div class="col-sm-12">
-                                                            <textarea style="margin-bottom: 2%; min-height: 100px" name="comments" placeholder="motif de refus" class="col-xs-12 col-sm-12"></textarea>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div style="margin-left: 2%;">
-                                                    <div class="form-group">
-
-                                                        <button class="btn " data-dismiss="modal">
-                                                            <i class="ace-icon fa fa-times"></i>
-                                                            No
-                                                        </button>
-
-                                                        <button class="btn btn-danger" type="submit">
-                                                            <i class="ace-icon fa fa-check"></i>
-                                                            Yes
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-
-                            <div class="modal-footer" id="footerModalRefuser">
-                                <form>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            }
-
-            <!--    <div id="modal-form-confirm-delete" class="modal" tabindex="-1">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                <h4 class="blue">Confirm Delete</h4>
-                            </div>
-
-                            <div class="modal-body">
-                                <div class="row">
-
-                                    <div class="error-container">
-                                        <div class="well">
-                                            <h2 class="lighter smaller"> <span class="blue">Do you want to delete ?</span></h2>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-
-                            <div class="modal-footer" id="footerModal">
-                                <form>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div> -->
 
         </div><!-- /.page-content -->
 

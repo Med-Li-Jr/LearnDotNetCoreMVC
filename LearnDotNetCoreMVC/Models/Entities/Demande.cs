@@ -79,6 +79,7 @@ namespace LearnDotNetCoreMVC.Models.Entities
         public long ID { get; set; }
         [Display(Name = "Nom")]
 
+        [Required]
         public string Name { get; set; }
         public string Affiliation { get; set; }
 
@@ -94,6 +95,7 @@ namespace LearnDotNetCoreMVC.Models.Entities
         [Display(Name = "Pays")]
         public string Country { get; set; }
         [Display(Name = "Email")]
+        [Required]
         public string Email { get; set; }
         public string Phone { get; set; }
         [Display(Name = "Personne à Contacter")]

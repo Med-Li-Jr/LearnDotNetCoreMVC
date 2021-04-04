@@ -171,8 +171,8 @@ namespace LearnDotNetCoreMVC.Controllers
         }
 
 
-        [HttpGet("/demands/{fieldSearch}", Name = "demandDetail")]
-        public async Task<IActionResult> DetailDemand(string fieldSearch)
+        [HttpGet("/demands/{value}", Name = "demandDetail")]
+        public async Task<IActionResult> DetailDemand(string value)
         {
             string messageError = null;
             Demande Demands = null;
@@ -182,7 +182,7 @@ namespace LearnDotNetCoreMVC.Controllers
 
                 HttpClient serverAPI = RequestAPI.Initial();
 
-                string urlApi = serverAPI.BaseAddress + "demande/" + fieldSearch;
+                string urlApi = serverAPI.BaseAddress + "demande/" + value;
 
                 HttpResponseMessage reuqestResponseAPI = await serverAPI.GetAsync(urlApi);
                 var results = reuqestResponseAPI.Content.ReadAsStringAsync().Result;
@@ -211,6 +211,66 @@ namespace LearnDotNetCoreMVC.Controllers
             ViewData["menuActive"] = "Demandes";
 
             return View("../Demands/Detail", Demands);
+        }
+
+
+        // POST api/<HomeController>/5
+        [HttpPost("demands/{value}", Name = "demandResponse")]
+        public async Task<IActionResult> RepondreRequest(string value, string mAction, Demande demande)
+        {
+            string messageError = null;
+            string HasError = "null";
+
+            try
+            {
+                mAction.Trim().ToLower();
+
+                if (ModelState.IsValid)
+                {
+                    HttpClient serverAPI = RequestAPI.Initial();
+
+                    HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Post, serverAPI.BaseAddress + "demande/" + long.Parse(value));
+
+                    demande.RegDemandDate = DateTime.Now.ToShortDateString();
+                    demande.RegDemandDecision = mAction;
+                    string json = JsonConvert.SerializeObject(demande);
+                    requestMessage.Content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
+
+                    HttpClient http = new HttpClient();
+                    HttpResponseMessage reuqestResponseAPI = await http.SendAsync(requestMessage);
+                    ResponseAPI responseAPI = JsonConvert.DeserializeObject<ResponseAPI>(reuqestResponseAPI.Content.ReadAsStringAsync().Result);
+                    
+                    if (responseAPI.Success)
+                        HasError = "false";
+                    else
+                        HasError = "true";
+
+                    messageError = responseAPI.Message;
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+                HasError = "true";
+                messageError = ex.Message;
+            }
+
+
+            ViewData["HasError"] = HasError;
+            ViewData["MessageResponse"] = messageError;
+            ViewData["menuActive"] = "Demandes";
+
+            if (HasError == "true")
+                return View("../Demands/Detail", demande);
+
+            return RedirectToRoute(new
+            {
+                controller = this.ControllerContext.RouteData.Values["controller"].ToString(),
+                action = "DetailDemand",
+                value = value
+            });
+
         }
 
 

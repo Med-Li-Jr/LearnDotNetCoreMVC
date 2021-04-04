@@ -45,3 +45,4 @@ D:\LearningPaths\DotNet\LearnDotNetCoreMVC\LearnDotNetCoreMVC\obj\Debug\net5.0\r
 D:\LearningPaths\DotNet\LearnDotNetCoreMVC\LearnDotNetCoreMVC\obj\Debug\net5.0\LearnDotNetCoreMVC.pdb
 D:\LearningPaths\DotNet\LearnDotNetCoreMVC\LearnDotNetCoreMVC\obj\Debug\net5.0\LearnDotNetCoreMVC.genruntimeconfig.cache
 D:\LearningPaths\DotNet\LearnDotNetCoreMVC\LearnDotNetCoreMVC\obj\Debug\net5.0\LearnDotNetCoreMVC.csprojAssemblyReference.cache
+D:\LearningPaths\DotNet\LearnDotNetCoreMVC\LearnDotNetCoreMVC\obj\Debug\net5.0\Razor\Views\Shared\_ModalResponse.cshtml.g.cs
