@@ -60,7 +60,7 @@
                                                     @organization.RegDemandDate
                                                 </td>
                                                 <td>
-                                                    <a asp-route="requestsDetail" asp-route-id="@organization.ID">@organization.Name</a>
+                                                    <a asp-route="demandDetail" asp-route-fieldSearch="@organization.ID">@organization.Name</a>
                                                 </td>
                                                 <td>
                                                     @organization.Affiliation
@@ -89,7 +89,7 @@
                                                 </td>
                                                 <td>
                                                     <div>
-                                                        <a class="blue" asp-route="requestsDetail" asp-route-id="@organization.ID">
+                                                        <a class="blue" asp-route="demandDetail" asp-route-fieldSearch="@organization.ID">
                                                             <i class="ace-icon fa fa-search-plus bigger-130"></i>
                                                         </a>
                                                     </div>

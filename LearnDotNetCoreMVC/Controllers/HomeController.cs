@@ -138,11 +138,13 @@ namespace LearnDotNetCoreMVC.Controllers
             {
 
                 HttpClient serverAPI = RequestAPI.Initial();
+
                 string urlApi = serverAPI.BaseAddress + "demande/all";
+
                 HttpResponseMessage reuqestResponseAPI = await serverAPI.GetAsync(urlApi);
                 var results = reuqestResponseAPI.Content.ReadAsStringAsync().Result;
                 ResponseAPI responseAPI = JsonConvert.DeserializeObject<ResponseAPI>(results);
-                 if (responseAPI.Success)
+                if (responseAPI.Success)
                 {
                     HasError = "false";
                     AllDemands = JsonConvert.DeserializeObject<List<Demande>>(JsonConvert.SerializeObject(responseAPI.Data));
@@ -166,6 +168,49 @@ namespace LearnDotNetCoreMVC.Controllers
             ViewData["menuActive"] = "Demandes";
 
             return View("../Demands/Index", AllDemands);
+        }
+
+
+        [HttpGet("/demands/{fieldSearch}", Name = "demandDetail")]
+        public async Task<IActionResult> DetailDemand(string fieldSearch)
+        {
+            string messageError = null;
+            Demande Demands = null;
+            string HasError = "null";
+            try
+            {
+
+                HttpClient serverAPI = RequestAPI.Initial();
+
+                string urlApi = serverAPI.BaseAddress + "demande/" + fieldSearch;
+
+                HttpResponseMessage reuqestResponseAPI = await serverAPI.GetAsync(urlApi);
+                var results = reuqestResponseAPI.Content.ReadAsStringAsync().Result;
+                ResponseAPI responseAPI = JsonConvert.DeserializeObject<ResponseAPI>(results);
+                if (responseAPI.Success)
+                {
+                    HasError = "false";
+                    Demands = JsonConvert.DeserializeObject<Demande>(JsonConvert.SerializeObject(responseAPI.Data));
+                }
+                else
+                {
+                    HasError = "true";
+                }
+                messageError = responseAPI.Message;
+
+            }
+            catch (Exception ex)
+            {
+                HasError = "true";
+                messageError = ex.Message;
+            }
+
+
+            ViewData["HasError"] = HasError;
+            ViewData["MessageResponse"] = messageError;
+            ViewData["menuActive"] = "Demandes";
+
+            return View("../Demands/Detail", Demands);
         }
 
 
@@ -234,19 +279,6 @@ namespace LearnDotNetCoreMVC.Controllers
                 ViewData["msgError"] = resp.StatusCode + " // " + resp.Content.ReadAsStringAsync().Result + " // " + resp.RequestMessage;
             }
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
