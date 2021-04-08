@@ -7,7 +7,6 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -16,6 +15,10 @@ namespace LearnDotNetCoreMVC.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+
+        private readonly string NameAdmin = "docstream";
+        private readonly string EmailAdmin = "ds@gmail.com";
+        private readonly string PasswordAdmin = "123456";
 
         public HomeController(ILogger<HomeController> logger)
         {
@@ -47,38 +50,76 @@ namespace LearnDotNetCoreMVC.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    HttpClient serverAPI = RequestAPI.Initial();
+                    if (user.Email.Trim().ToLower().Equals(EmailAdmin.ToLower()))
+                    {
+                        if (user.PassWord.Trim().Equals(PasswordAdmin.Trim()))
+                        {
+                            HasError = "false";
+                            messageError = "Success Login Admin";
 
-                    HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Post, serverAPI.BaseAddress + "auth");
-
-                    string json = JsonConvert.SerializeObject(user);
-
-                    requestMessage.Content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
-
-                    HttpClient http = new HttpClient();
-                    HttpResponseMessage reuqestResponseAPI = await http.SendAsync(requestMessage);
-
-                    ResponseAPI responseAPI = JsonConvert.DeserializeObject<ResponseAPI>(reuqestResponseAPI.Content.ReadAsStringAsync().Result);
-
-                    if (responseAPI.Success)
-                        HasError = "false";
+                        }
+                        else
+                        {
+                            HasError = "true";
+                            messageError = "User Not Found, please check your email or password";
+                        }
+                    }
                     else
-                        HasError = "true";
+                    {
 
-                    messageError = responseAPI.Message;
+                        HttpClient serverAPI = RequestAPI.Initial();
+                        string urlApi = serverAPI.BaseAddress + "auth";
+                        HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Post, urlApi);
 
+                        string json = JsonConvert.SerializeObject(user);
+
+                        requestMessage.Content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
+
+                        HttpClient http = new HttpClient();
+                        HttpResponseMessage reuqestResponseAPI = await http.SendAsync(requestMessage);
+
+                        var results = reuqestResponseAPI.Content.ReadAsStringAsync().Result;
+                        ResponseAPI responseAPI = JsonConvert.DeserializeObject<ResponseAPI>(results);
+                        if (responseAPI != null)
+                        {
+                            HasError = "" + !responseAPI.Success;
+                            if (!responseAPI.Success)
+                                messageError = responseAPI.Message;
+                        }
+                        else
+                        {
+                            HasError = "true";
+                            messageError = "Error From server";
+                        }
+                    }
+
+
+                }
+                else
+                {
+                    HasError = "true";
                 }
 
             }
             catch (Exception ex)
             {
-                HasError = "false";
+                HasError = "true";
                 messageError = ex.Message;
 
             }
-            ViewData["HasError"] = HasError;
-            ViewData["MessageResponse"] = messageError;
-            return View("../Auths/Login", user);
+            if (HasError.ToLower().Equals("true"))
+            {
+                HasError = HasError.ToLower(); ViewData["HasError"] = HasError;
+                ViewData["MessageResponse"] = messageError;
+                return View("../Auths/Login", user);
+            }
+
+            return RedirectToRoute(new
+            {
+                controller = this.ControllerContext.RouteData.Values["controller"].ToString(),
+                action = "IndexDemand"
+            });
+
         }
 
 
@@ -97,27 +138,50 @@ namespace LearnDotNetCoreMVC.Controllers
         {
             string messageError = null;
             string HasError = "null";
-            if (ModelState.IsValid)
+            try
             {
-                HttpClient serverAPI = RequestAPI.Initial();
+                if (ModelState.IsValid)
+                {
+                    HttpClient serverAPI = RequestAPI.Initial();
 
-                HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Post, serverAPI.BaseAddress + "demande");
+                    string urlApi = serverAPI.BaseAddress + "demande";
+                    HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Post, urlApi);
 
-                string json = JsonConvert.SerializeObject(Demande);
+                    string json = JsonConvert.SerializeObject(Demande);
 
-                requestMessage.Content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
+                    requestMessage.Content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
 
-                HttpClient http = new HttpClient();
-                HttpResponseMessage reuqestResponseAPI = await http.SendAsync(requestMessage);
-                ResponseAPI responseAPI = JsonConvert.DeserializeObject<ResponseAPI>(reuqestResponseAPI.Content.ReadAsStringAsync().Result);
-                if (responseAPI.Success)
-                    HasError = "false";
+                    HttpClient http = new HttpClient();
+                    HttpResponseMessage reuqestResponseAPI = await http.SendAsync(requestMessage);
+                    var results = reuqestResponseAPI.Content.ReadAsStringAsync().Result;
+                    ResponseAPI responseAPI = JsonConvert.DeserializeObject<ResponseAPI>(results);
+
+                    if (responseAPI != null)
+                    {
+                        HasError = "" + !responseAPI.Success;
+                        if (!responseAPI.Success)
+                            messageError = responseAPI.Message;
+                    }
+                    else
+                    {
+                        HasError = "true";
+                        messageError = "Error From server";
+                    }
+
+                }
                 else
+                {
                     HasError = "true";
-
-                messageError = responseAPI.Message;
+                }
 
             }
+            catch (Exception ex)
+            {
+                HasError = "true";
+                messageError = ex.Message;
+
+            }
+            HasError = HasError.ToLower();
             ViewData["HasError"] = HasError;
             ViewData["MessageResponse"] = messageError;
 
@@ -144,16 +208,19 @@ namespace LearnDotNetCoreMVC.Controllers
                 HttpResponseMessage reuqestResponseAPI = await serverAPI.GetAsync(urlApi);
                 var results = reuqestResponseAPI.Content.ReadAsStringAsync().Result;
                 ResponseAPI responseAPI = JsonConvert.DeserializeObject<ResponseAPI>(results);
-                if (responseAPI.Success)
+                if (responseAPI != null)
                 {
-                    HasError = "false";
+                    HasError = "" + !responseAPI.Success;
+                    if (!responseAPI.Success)
+                        messageError = responseAPI.Message;
                     AllDemands = JsonConvert.DeserializeObject<List<Demande>>(JsonConvert.SerializeObject(responseAPI.Data));
                 }
                 else
                 {
                     HasError = "true";
+                    messageError = "Error From server";
                 }
-                messageError = responseAPI.Message;
+
 
             }
             catch (Exception ex)
@@ -163,6 +230,7 @@ namespace LearnDotNetCoreMVC.Controllers
             }
 
 
+            HasError = HasError.ToLower();
             ViewData["HasError"] = HasError;
             ViewData["MessageResponse"] = messageError;
             ViewData["menuActive"] = "Demandes";
@@ -187,16 +255,21 @@ namespace LearnDotNetCoreMVC.Controllers
                 HttpResponseMessage reuqestResponseAPI = await serverAPI.GetAsync(urlApi);
                 var results = reuqestResponseAPI.Content.ReadAsStringAsync().Result;
                 ResponseAPI responseAPI = JsonConvert.DeserializeObject<ResponseAPI>(results);
-                if (responseAPI.Success)
+
+                if (responseAPI != null)
                 {
-                    HasError = "false";
-                    Demands = JsonConvert.DeserializeObject<Demande>(JsonConvert.SerializeObject(responseAPI.Data));
+                    HasError = "" + !responseAPI.Success;
+                    if (!responseAPI.Success)
+                        messageError = responseAPI.Message;
+                    else
+                        Demands = JsonConvert.DeserializeObject<Demande>(JsonConvert.SerializeObject(responseAPI.Data));
                 }
                 else
                 {
                     HasError = "true";
+                    messageError = "Error From server";
                 }
-                messageError = responseAPI.Message;
+
 
             }
             catch (Exception ex)
@@ -205,7 +278,9 @@ namespace LearnDotNetCoreMVC.Controllers
                 messageError = ex.Message;
             }
 
+            
 
+            HasError = HasError.ToLower(); 
             ViewData["HasError"] = HasError;
             ViewData["MessageResponse"] = messageError;
             ViewData["menuActive"] = "Demandes";
@@ -216,7 +291,7 @@ namespace LearnDotNetCoreMVC.Controllers
 
         // POST api/<HomeController>/5
         [HttpPost("demands/{value}", Name = "demandResponse")]
-        public async Task<IActionResult> RepondreRequest(string value, string mAction, Demande demande)
+        public async Task<IActionResult> RepondreRequest(string value, string mAction, string PrefixDB, string PrefixFolder, Demande demande)
         {
             string messageError = null;
             string HasError = "null";
@@ -229,7 +304,9 @@ namespace LearnDotNetCoreMVC.Controllers
                 {
                     HttpClient serverAPI = RequestAPI.Initial();
 
-                    HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Post, serverAPI.BaseAddress + "demande/" + long.Parse(value));
+                    string urlApi = serverAPI.BaseAddress + "demande/" + long.Parse(value) + $"?PrefixDB={PrefixDB}&PrefixFolder={PrefixFolder}";
+
+                    HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Post, urlApi);
 
                     demande.RegDemandDate = DateTime.Now.ToShortDateString();
                     demande.RegDemandDecision = mAction;
@@ -238,15 +315,25 @@ namespace LearnDotNetCoreMVC.Controllers
 
                     HttpClient http = new HttpClient();
                     HttpResponseMessage reuqestResponseAPI = await http.SendAsync(requestMessage);
-                    ResponseAPI responseAPI = JsonConvert.DeserializeObject<ResponseAPI>(reuqestResponseAPI.Content.ReadAsStringAsync().Result);
-                    
-                    if (responseAPI.Success)
-                        HasError = "false";
+                    var results = reuqestResponseAPI.Content.ReadAsStringAsync().Result;
+                    ResponseAPI responseAPI = JsonConvert.DeserializeObject<ResponseAPI>(results);
+
+                    if (responseAPI != null)
+                    {
+                        HasError = "" + !responseAPI.Success;
+                        if (!responseAPI.Success)
+                            messageError = responseAPI.Message;
+                    }
                     else
+                    {
                         HasError = "true";
+                        messageError = "Error From server";
+                    }
 
-                    messageError = responseAPI.Message;
-
+                }
+                else
+                {
+                    HasError = "true"; 
                 }
 
             }
@@ -254,9 +341,9 @@ namespace LearnDotNetCoreMVC.Controllers
             {
                 HasError = "true";
                 messageError = ex.Message;
+
             }
-
-
+            HasError = HasError.ToLower();
             ViewData["HasError"] = HasError;
             ViewData["MessageResponse"] = messageError;
             ViewData["menuActive"] = "Demandes";
@@ -295,16 +382,19 @@ namespace LearnDotNetCoreMVC.Controllers
                 HttpResponseMessage reuqestResponseAPI = await serverAPI.GetAsync(urlApi);
                 var results = reuqestResponseAPI.Content.ReadAsStringAsync().Result;
                 ResponseAPI responseAPI = JsonConvert.DeserializeObject<ResponseAPI>(results);
-                if (responseAPI.Success)
+
+                if (responseAPI != null)
                 {
-                    HasError = "false";
+                    HasError = "" + !responseAPI.Success;
+                    if (!responseAPI.Success)
+                        messageError = responseAPI.Message;
                     AllOrganizations = JsonConvert.DeserializeObject<List<Organization>>(JsonConvert.SerializeObject(responseAPI.Data));
                 }
                 else
                 {
                     HasError = "true";
+                    messageError = "Error From server";
                 }
-                messageError = responseAPI.Message;
 
             }
             catch (Exception ex)
@@ -314,12 +404,155 @@ namespace LearnDotNetCoreMVC.Controllers
             }
 
 
+            HasError = HasError.ToLower(); 
             ViewData["HasError"] = HasError;
             ViewData["MessageResponse"] = messageError;
             ViewData["menuActive"] = "Organisations";
 
             return View("../Organizations/Index", AllOrganizations);
         }
+
+
+        [HttpGet("/organizations/{value}", Name = "detailOrganization")]
+        public async Task<IActionResult> DetailOrganization(string value)
+        {
+            string messageError = null;
+            string HasError = "null";
+            Organization organization = null;
+            List<User> AllUsers = new List<User>();
+            try
+            {
+
+                HttpClient serverAPI = RequestAPI.Initial();
+
+                string urlApi = serverAPI.BaseAddress + "organization/" + value;
+
+                HttpResponseMessage reuqestResponseAPI = await serverAPI.GetAsync(urlApi);
+                var results = reuqestResponseAPI.Content.ReadAsStringAsync().Result;
+                ResponseAPI responseAPI = JsonConvert.DeserializeObject<ResponseAPI>(results);
+
+                if (responseAPI != null)
+                {
+                    HasError = "" + !responseAPI.Success;
+                    if (!responseAPI.Success)
+                        messageError = responseAPI.Message;
+                    organization = JsonConvert.DeserializeObject<Organization>(JsonConvert.SerializeObject(responseAPI.Data));
+                }
+                else
+                {
+                    HasError = "true";
+                    messageError = "Error From server";
+                }
+
+
+                //Get All Users Organization
+                urlApi = serverAPI.BaseAddress + $"user/organization?IdOrganization={value}";
+
+                reuqestResponseAPI = await serverAPI.GetAsync(urlApi);
+                results = reuqestResponseAPI.Content.ReadAsStringAsync().Result;
+                responseAPI = JsonConvert.DeserializeObject<ResponseAPI>(results);
+                if (responseAPI != null && responseAPI.Success)
+                {
+                    HasError = "false";
+                    AllUsers = JsonConvert.DeserializeObject<List<User>>(JsonConvert.SerializeObject(responseAPI.Data));
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                HasError = "true";
+                messageError = ex.Message;
+            }
+
+
+
+            ViewBag.AllUsers = AllUsers;
+            ViewData["User_Numbers"] = "" + AllUsers.Count;
+            ViewData["Disk_usage"] = "0";
+            ViewData["Folder_Numbers"] = "0";
+            
+            HasError = HasError.ToLower(); 
+            ViewData["HasError"] = HasError;
+            ViewData["MessageResponse"] = messageError;
+            ViewData["menuActive"] = "Organisations";
+
+            return View("../organizations/Detail", organization);
+        }
+
+
+        [HttpPost("/organizations/{value}", Name = "updateOrganization")]
+        public async Task<IActionResult> UpdateOrganization(string value, Organization organization)
+        {
+            string messageError = null;
+            string HasError = "null";
+            ResponseAPI responseAPI = null;
+            try
+            {
+                if (ModelState.IsValid)
+                {
+
+                    HttpClient serverAPI = RequestAPI.Initial();
+
+                    string urlApi = serverAPI.BaseAddress + "organization/" + long.Parse(value);
+                    HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Post, urlApi);
+
+                    string json = JsonConvert.SerializeObject(organization);
+
+                    requestMessage.Content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
+                    var content= new StringContent(json, System.Text.Encoding.UTF8, "application/json");
+                    HttpClient http = new HttpClient();
+                    HttpResponseMessage reuqestResponseAPI = await http.PostAsync(urlApi, content);
+                    var results = reuqestResponseAPI.Content.ReadAsStringAsync().Result;
+                    responseAPI = JsonConvert.DeserializeObject<ResponseAPI>(results);
+
+                    if (responseAPI != null)
+                    {
+                        HasError = "" + !responseAPI.Success;
+                        if (!responseAPI.Success)
+                            messageError = responseAPI.Message;
+                    }
+                    else
+                    {
+                        HasError = "true"; 
+                        messageError = "Error From server";
+                    }
+                }
+                else
+                {
+                    HasError = "true";
+                }
+
+            }
+            catch (Exception ex)
+            {
+                HasError = "true";
+                messageError = ex.Message;
+            }
+
+
+            HasError = HasError.ToLower(); 
+            ViewData["HasError"] = HasError;
+            ViewData["MessageResponse"] = messageError;
+            ViewData["menuActive"] = "Organisations";
+            
+            return RedirectToRoute(new
+            {
+                controller = this.ControllerContext.RouteData.Values["controller"].ToString(),
+                action = "DetailOrganization",
+                value = value
+            });
+            //return View("../organizations/Detail", organization);
+        }
+
+
+
+
+         
+
+
+
+
         public async void sendPost(Demande Demande)
         {
 

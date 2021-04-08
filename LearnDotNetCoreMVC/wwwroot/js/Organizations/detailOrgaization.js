@@ -1,6 +1,6 @@
 ﻿
 let tabDetail = document.getElementById("tabDetail");
-let allInput = document.getElementsByClassName("col-xs-11");
+let allInput = document.getElementsByClassName("inputRead");
 let textCountry = document.getElementById("textCountry");
 let countrySelect = document.getElementById("countrySelect");
 let typeSelect = document.getElementById("typeSelect");
@@ -10,7 +10,14 @@ let statusText = document.getElementById("statusText");
 
 let btnEdit = document.getElementById("BtnEditer")
 let btnSave = document.getElementById("BtnSave");
+let btnCancel = document.getElementById("BtnCancel");
 
+let oldValue = [];
+
+for (const inp of allInput) {
+    oldValue.push(inp.value);
+    console.log(inp.value + " // " + oldValue.length)
+}
 function editerBtnClicked() {
 
     textCountry.setAttribute("hidden", true);
@@ -23,14 +30,15 @@ function editerBtnClicked() {
     statusSelect.removeAttribute("hidden");
 
     for (const inp of allInput) {
-        console.log(inp.value + " // " + inp.selected)
+        //console.log(inp.value + " // " + inp.placeholder)
         inp.removeAttribute('readonly');
     }
     tabDetail.click();
     btnEdit.setAttribute("hidden", true);
     btnSave.removeAttribute("hidden");
+    btnCancel.removeAttribute("hidden");
 }
-function saveBtnClicked() {
+function canceBtnClicked() {
 
     countrySelect.setAttribute("hidden", true);
     textCountry.removeAttribute("hidden");
@@ -40,13 +48,16 @@ function saveBtnClicked() {
 
     statusSelect.setAttribute("hidden", true);
     statusText.removeAttribute("hidden");
-
+    let i = 0;
     for (const inp of allInput) {
+        inp.value = oldValue[i];
+        i++;
         inp.setAttribute('readonly', true);
     }
     tabDetail.click();
     btnEdit.removeAttribute("hidden");
     btnSave.setAttribute("hidden", true);
+    btnCancel.setAttribute("hidden", true);
 }
 
 
@@ -220,23 +231,19 @@ $('.dialogs,.comments').ace_scroll({
     size: 300
 });
 
-jQuery(function ($) {
-    //initiate dataTables plugin
-    var myTable =
-        $('#dynamic-table')
-            .DataTable({
-                bAutoWidth: false,
-                "aoColumns": [
-                    null, null, null,
-                    { "bSortable": false }
-                ],
-                "aaSorting": [],
-                select: {
-                    style: 'multi'
-                }
-            });
-})
-
+//initiate dataTables plugin
+var myTable =
+    $('#dynamic-table')
+        .DataTable({
+            bAutoWidth: false,
+            "aoColumns": [
+                null, null, null
+            ],
+            "aaSorting": [],
+            select: {
+                style: 'multi'
+            }
+        });
 
 
 

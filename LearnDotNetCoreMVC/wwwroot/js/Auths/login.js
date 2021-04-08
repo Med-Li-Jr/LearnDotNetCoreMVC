@@ -1,4 +1,4 @@
-﻿$('#ResponseModal').modal('toggle');
+﻿
 
 let loginContainer = document.getElementById("loginContainer");
 

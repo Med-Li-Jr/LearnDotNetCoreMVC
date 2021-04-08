@@ -19,7 +19,7 @@ namespace LearnDotNetCoreMVC.Outils
             try
             {
                 var client = new HttpClient();
-                client.BaseAddress = new Uri("https://localhost:44316/api/");
+                client.BaseAddress = new Uri("https://localhost:44317/api/");
                 return client;
             }
             catch (HttpRequestException e)

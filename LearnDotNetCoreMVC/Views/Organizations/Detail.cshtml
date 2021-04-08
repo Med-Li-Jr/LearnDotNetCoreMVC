@@ -28,10 +28,11 @@
 
     string HasrError = (string)(ViewData["HasError"] ?? "false");
     string MessageResponse = (string)(ViewData["MessageResponse"] ?? "pas d'erreur");
-    string Disk_usage = (string)(ViewData["Disk_usage"] ?? "0 MB");
+    string Disk_usage = (string)(ViewData["Disk_usage"] ?? "0") + " MB";
     string Folder_Numbers = (string)(ViewData["Folder_Numbers"] ?? "0");
     string User_Numbers = (string)(ViewData["User_Numbers"] ?? "0");
 }
+
 <div class="main-content">
     <div class="main-content-inner">
         <div style="display: none">
@@ -67,401 +68,421 @@
 
                 <br />
                 <br />
-                <div id="BtnEditer">
-                    <button hidden style="z-index: 2; margin: 1% 1% 0 0;"
-                            class="btn pull-right btn-white btn-default btn-bold" onclick="editerBtnClicked()">
-                        <i class="ace-icon fa fa-edit bigger-120 blue"></i>
-                        Editer
-                    </button>
+                <form class="form-horizontal" role="form">
+                    <div id="BtnEditer">
+                        <a hidden style="z-index: 2; margin: 1% 1% 0 0;"
+                           class="btn pull-right btn-white btn-default btn-bold" onclick="editerBtnClicked()">
+                            <i class="ace-icon fa fa-edit bigger-120 blue"></i>
+                            Editer
+                        </a>
 
-                </div>
-                <div hidden id="BtnSave">
-                    <button style="z-index: 2; margin: 1% 1% 0 0;"
-                            class="btn pull-right btn-white btn-danger btn-bold" onclick="saveBtnClicked()">
-                        <i class="ace-icon fa fa-edit bigger-120 red"></i>
-                        Save
-                    </button>
-                </div>
+                    </div>
+                    <div hidden id="BtnSave">
+                        <button style="z-index: 2; margin: 1% 1% 0 0;"
+                                class="btn pull-right btn-white btn-success btn-bold" type="submit" formmethod="post" asp-route="updateOrganization" asp-route-value="@Model.Id">
+                            <i class="ace-icon fa fa-check bigger-120 green"></i>
+                            Save
+                        </button>
+                    </div>
+                    <div hidden id="BtnCancel">
+                        <a style="z-index: 2; margin: 1% 1% 0 0;" onclick="canceBtnClicked()"
+                                class="btn pull-right btn-white btn-danger btn-bold">
+                            <i class="ace-icon fa fa-times bigger-120 red"></i>
+                            Cancel
+                        </a>
+                    </div>
+                     
+                    <div class="btn-group pull-right" style="z-index: 2; margin: 1% 1% 0 0;">
+                        <a data-toggle="dropdown" class="btn btn-primary btn-white dropdown-toggle">
+                            Action
+                            <i class="ace-icon fa fa-angle-down icon-on-right"></i>
+                        </a> 
 
-                <div class="btn-group pull-right" style="z-index: 2; margin: 1% 1% 0 0;">
-                    <button data-toggle="dropdown" class="btn btn-primary btn-white dropdown-toggle">
-                        Action
-                        <i class="ace-icon fa fa-angle-down icon-on-right"></i>
-                    </button>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="#">Activé compte</a>
+                            </li>
 
-                    <ul class="dropdown-menu">
-                        <li>
-                            <a href="#">Activé compte</a>
-                        </li>
+                            <li>
+                                <a href="#">Désactivé compte</a>
+                            </li>
 
-                        <li>
-                            <a href="#">Désactivé compte</a>
-                        </li>
+                            <li>
+                                <a href="#"> <span class="text-danger">Supprimer compte</span></a>
+                            </li>
+                        </ul>
+                    </div><!-- /.btn-group -->
+                    <div class="tabbable" style="display: block">
 
-                        <li>
-                            <a href="#"> <span class="text-danger">Supprimer compte</span></a>
-                        </li>
-                    </ul>
-                </div><!-- /.btn-group -->
-                <div class="tabbable" style="display: block">
+                        <ul class="nav nav-tabs padding-12 tab-color-blue background-blue" id="myTab4">
+                            <li class="active">
+                                <a data-toggle="tab" id="tabHome" href="#summary">Home</a>
+                            </li>
 
-                    <ul class="nav nav-tabs padding-12 tab-color-blue background-blue" id="myTab4">
-                        <li class="active">
-                            <a data-toggle="tab" id="tabHome" href="#summary">Home</a>
-                        </li>
+                            <li>
+                                <a data-toggle="tab" id="tabDetail" href="#detailOrg">Detail</a>
+                            </li>
 
-                        <li>
-                            <a data-toggle="tab" id="tabDetail" href="#detailOrg">Detail</a>
-                        </li>
+                            <li>
+                                <a data-toggle="tab" id="tabUser" href="#usersOrg">Utilisateurs</a>
+                            </li>
+                        </ul>
 
-                        <li>
-                            <a data-toggle="tab" id="tabUser" href="#usersOrg">Utilisateurs</a>
-                        </li>
-                    </ul>
+                        <div class="tab-content">
+                            <div id="summary" class="tab-pane in active">
 
-                    <div class="tab-content">
-                        <div id="summary" class="tab-pane in active">
-
-                            <div class="clearfix">
+                                <div class="clearfix">
 
 
-                                <div class="grid3">
-                                    <h4 class="bigger">
-                                        <i class="ace-icon fa fa-cloud fa-2x blue"></i>
-                                        <span class="grey" style="margin-left: -2%;">
-                                            &nbsp; Disk Usage
-                                            @Disk_usage
-                                        </span>
-                                    </h4>
+                                    <div class="grid3">
+                                        <h4 class="bigger">
+                                            <i class="ace-icon fa fa-cloud fa-2x blue"></i>
+                                            <span class="grey" style="margin-left: -2%;">
+                                                &nbsp; Disk Usage
+                                                @Disk_usage
+                                            </span>
+                                        </h4>
+                                    </div>
+
+                                    <div class="grid3">
+                                        <h4 class="bigger">
+                                            <i class="ace-icon fa fa-folder fa-2x purple"></i>
+                                            <span class="grey" style="margin-left: -2%;">
+                                                &nbsp; Nbr Files
+                                                @Folder_Numbers
+                                            </span>
+                                        </h4>
+
+                                    </div>
+
+
+                                    <div class="grid3">
+                                        <h4 class="bigger">
+                                            <i class="ace-icon fa fa-users fa-2x red"></i>
+                                            <span class="grey" style="margin-left: -2%;">
+                                                &nbsp; Nbr Users
+                                                @User_Numbers
+                                            </span>
+                                        </h4>
+                                    </div>
+
                                 </div>
+                                <div class="space-12"></div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="widget-box">
+                                            <div class="widget-header widget-header-flat widget-header-small">
+                                                <h5 class="widget-title">
+                                                    <i class="ace-icon fa fa-signal"></i>
+                                                    Traffic Sources
+                                                </h5>
 
-                                <div class="grid3">
-                                    <h4 class="bigger">
-                                        <i class="ace-icon fa fa-folder fa-2x purple"></i>
-                                        <span class="grey" style="margin-left: -2%;">
-                                            &nbsp; Nbr Files
-                                            @Folder_Numbers
-                                        </span>
-                                    </h4>
+                                                <div class="widget-toolbar no-border">
+                                                    <div class="inline dropdown-hover">
+                                                        <a class="btn btn-minier btn-primary">
+                                                            This Week
+                                                            <i class="ace-icon fa fa-angle-down icon-on-right bigger-110"></i>
+                                                        </a>
 
-                                </div>
+                                                        <ul class="dropdown-menu dropdown-menu-right dropdown-125 dropdown-lighter dropdown-close dropdown-caret">
+                                                            <li class="active">
+                                                                <a href="#" class="blue">
+                                                                    <i class="ace-icon fa fa-caret-right bigger-110">&nbsp;</i>
+                                                                    This Week
+                                                                </a>
+                                                            </li>
 
+                                                            <li>
+                                                                <a href="#">
+                                                                    <i class="ace-icon fa fa-caret-right bigger-110 invisible">&nbsp;</i>
+                                                                    Last Week
+                                                                </a>
+                                                            </li>
 
-                                <div class="grid3">
-                                    <h4 class="bigger">
-                                        <i class="ace-icon fa fa-users fa-2x red"></i>
-                                        <span class="grey" style="margin-left: -2%;">
-                                            &nbsp; Nbr Users
-                                            @User_Numbers
-                                        </span>
-                                    </h4>
-                                </div>
+                                                            <li>
+                                                                <a href="#">
+                                                                    <i class="ace-icon fa fa-caret-right bigger-110 invisible">&nbsp;</i>
+                                                                    This Month
+                                                                </a>
+                                                            </li>
+
+                                                            <li>
+                                                                <a href="#">
+                                                                    <i class="ace-icon fa fa-caret-right bigger-110 invisible">&nbsp;</i>
+                                                                    Last Month
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="widget-body">
+                                                <div class="widget-main">
+                                                    <div id="piechart-placeholder"></div>
+
+                                                    <div class="hr hr8 hr-double"></div>
+
+                                                    <div class="clearfix">
+                                                        <div class="grid3">
+                                                            <span class="grey">
+                                                                <i class="ace-icon fa fa-facebook-square fa-2x blue"></i>
+                                                                &nbsp; likes
+                                                            </span>
+                                                            <h4 class="bigger pull-right">1,255</h4>
+                                                        </div>
+
+                                                        <div class="grid3">
+                                                            <span class="grey">
+                                                                <i class="ace-icon fa fa-twitter-square fa-2x purple"></i>
+                                                                &nbsp; tweets
+                                                            </span>
+                                                            <h4 class="bigger pull-right">941</h4>
+                                                        </div>
+
+                                                        <div class="grid3">
+                                                            <span class="grey">
+                                                                <i class="ace-icon fa fa-pinterest-square fa-2x red"></i>
+                                                                &nbsp; pins
+                                                            </span>
+                                                            <h4 class="bigger pull-right">1,050</h4>
+                                                        </div>
+                                                    </div>
+                                                </div><!-- /.widget-main -->
+                                            </div><!-- /.widget-body -->
+                                        </div><!-- /.widget-box -->
+                                    </div><!-- /.col -->
+                                    <div class="col-sm-6">
+                                        <div class="widget-box transparent">
+                                            <div class="widget-header widget-header-flat">
+                                                <h4 class="widget-title lighter">
+                                                    <i class="ace-icon fa fa-signal"></i>
+                                                    Sale Stats
+                                                </h4>
+
+                                                <div class="widget-toolbar">
+                                                    <a href="#" data-action="collapse">
+                                                        <i class="ace-icon fa fa-chevron-up"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+
+                                            <div class="widget-body">
+                                                <div class="widget-main padding-4">
+                                                    <div id="sales-charts"></div>
+                                                </div><!-- /.widget-main -->
+                                            </div><!-- /.widget-body -->
+                                        </div><!-- /.widget-box -->
+                                    </div><!-- /.col -->
+                                </div><!-- /.row -->
 
                             </div>
-                            <div class="space-12"></div>
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <div class="widget-box">
-                                        <div class="widget-header widget-header-flat widget-header-small">
-                                            <h5 class="widget-title">
-                                                <i class="ace-icon fa fa-signal"></i>
-                                                Traffic Sources
-                                            </h5>
 
-                                            <div class="widget-toolbar no-border">
-                                                <div class="inline dropdown-hover">
-                                                    <button class="btn btn-minier btn-primary">
-                                                        This Week
-                                                        <i class="ace-icon fa fa-angle-down icon-on-right bigger-110"></i>
-                                                    </button>
+                            <div id="detailOrg" class="tab-pane">
 
-                                                    <ul class="dropdown-menu dropdown-menu-right dropdown-125 dropdown-lighter dropdown-close dropdown-caret">
-                                                        <li class="active">
-                                                            <a href="#" class="blue">
-                                                                <i class="ace-icon fa fa-caret-right bigger-110">&nbsp;</i>
-                                                                This Week
-                                                            </a>
-                                                        </li>
 
-                                                        <li>
-                                                            <a href="#">
-                                                                <i class="ace-icon fa fa-caret-right bigger-110 invisible">&nbsp;</i>
-                                                                Last Week
-                                                            </a>
-                                                        </li>
+                                <div style="display: grid; grid-template-columns: 50% 50%;">
 
-                                                        <li>
-                                                            <a href="#">
-                                                                <i class="ace-icon fa fa-caret-right bigger-110 invisible">&nbsp;</i>
-                                                                This Month
-                                                            </a>
-                                                        </li>
+                                    <div> 
+                                        <div class="myFormGroup">
+                                            <label class="control-label no-padding-right" for="NameFr" asp-for="NameFr"></label>
 
-                                                        <li>
-                                                            <a href="#">
-                                                                <i class="ace-icon fa fa-caret-right bigger-110 invisible">&nbsp;</i>
-                                                                Last Month
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
+                                            <div>
+                                                <input type="text" readonly asp-for="NameFr" placeholder="NameFr" class="inputRead" />
                                             </div>
                                         </div>
+                                        <div class="myFormGroup">
+                                            <label class="control-label no-padding-right" for="NameAr" asp-for="NameAr"></label>
 
-                                        <div class="widget-body">
-                                            <div class="widget-main">
-                                                <div id="piechart-placeholder"></div>
-
-                                                <div class="hr hr8 hr-double"></div>
-
-                                                <div class="clearfix">
-                                                    <div class="grid3">
-                                                        <span class="grey">
-                                                            <i class="ace-icon fa fa-facebook-square fa-2x blue"></i>
-                                                            &nbsp; likes
-                                                        </span>
-                                                        <h4 class="bigger pull-right">1,255</h4>
-                                                    </div>
-
-                                                    <div class="grid3">
-                                                        <span class="grey">
-                                                            <i class="ace-icon fa fa-twitter-square fa-2x purple"></i>
-                                                            &nbsp; tweets
-                                                        </span>
-                                                        <h4 class="bigger pull-right">941</h4>
-                                                    </div>
-
-                                                    <div class="grid3">
-                                                        <span class="grey">
-                                                            <i class="ace-icon fa fa-pinterest-square fa-2x red"></i>
-                                                            &nbsp; pins
-                                                        </span>
-                                                        <h4 class="bigger pull-right">1,050</h4>
-                                                    </div>
-                                                </div>
-                                            </div><!-- /.widget-main -->
-                                        </div><!-- /.widget-body -->
-                                    </div><!-- /.widget-box -->
-                                </div><!-- /.col -->
-                                <div class="col-sm-6">
-                                    <div class="widget-box transparent">
-                                        <div class="widget-header widget-header-flat">
-                                            <h4 class="widget-title lighter">
-                                                <i class="ace-icon fa fa-signal"></i>
-                                                Sale Stats
-                                            </h4>
-
-                                            <div class="widget-toolbar">
-                                                <a href="#" data-action="collapse">
-                                                    <i class="ace-icon fa fa-chevron-up"></i>
-                                                </a>
+                                            <div>
+                                                <input type="text" readonly asp-for="NameAr" placeholder="NameAr" class="inputRead " />
                                             </div>
                                         </div>
+                                        <div class="myFormGroup">
+                                            <label class="control-label no-padding-right" for="Acronym" asp-for="Acronym"></label>
 
-                                        <div class="widget-body">
-                                            <div class="widget-main padding-4">
-                                                <div id="sales-charts"></div>
-                                            </div><!-- /.widget-main -->
-                                        </div><!-- /.widget-body -->
-                                    </div><!-- /.widget-box -->
-                                </div><!-- /.col -->
-                            </div><!-- /.row -->
-
-                        </div>
-
-                        <div id="detailOrg" class="tab-pane">
-
-                            <form class="form-horizontal" role="form">
-
-                                <div class="row">
-
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label class="col-sm-3 control-label no-padding-right" for="NameFr" asp-for="NameFr"></label>
-
-                                            <div class="col-sm-9">
-                                                <input type="text" readonly asp-for="NameFr" placeholder="NameFr" class="col-xs-11 col-sm-8" />
+                                            <div>
+                                                <input type="text" readonly asp-for="Acronym" placeholder="Acronym" class="inputRead " />
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label class="col-sm-3 control-label no-padding-right" for="NameAr" asp-for="NameAr"></label>
+                                        <div class="myFormGroup">
+                                            <label class="control-label no-padding-right" for="OrganisationLogo" asp-for="OrganisationLogo"></label>
 
-                                            <div class="col-sm-9">
-                                                <input type="text" readonly asp-for="NameAr" placeholder="NameAr" class="col-xs-11 col-sm-8" />
+                                            <div>
+                                                <input type="text" readonly asp-for="OrganisationLogo" placeholder="OrganisationLogo" class="inputRead " />
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label class="col-sm-3 control-label no-padding-right" for="Acronym" asp-for="Acronym"></label>
+                                        <div class="myFormGroup">
+                                            <label class="control-label no-padding-right" for="Affiliation" asp-for="Affiliation"></label>
 
-                                            <div class="col-sm-9">
-                                                <input type="text" readonly asp-for="Acronym" placeholder="Acronym" class="col-xs-11 col-sm-8" />
+                                            <div>
+                                                <input type="text" readonly asp-for="Affiliation" placeholder="Affiliation" class="inputRead " />
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label class="col-sm-3 control-label no-padding-right" for="OrganisationLogo" asp-for="OrganisationLogo"></label>
+                                        <div class="myFormGroup">
+                                            <label class="control-label no-padding-right" for="AffiliationLogo" asp-for="AffiliationLogo"></label>
 
-                                            <div class="col-sm-9">
-                                                <input type="text" readonly asp-for="OrganisationLogo" placeholder="OrganisationLogo" class="col-xs-11 col-sm-8" />
+                                            <div>
+                                                <input type="text" readonly asp-for="AffiliationLogo" placeholder="AffiliationLogo" class="inputRead " />
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label class="col-sm-3 control-label no-padding-right" for="Affiliation" asp-for="Affiliation"></label>
+                                        <div class="myFormGroup">
+                                            <label class="control-label no-padding-right" for="FieldOfActivity" asp-for="FieldOfActivity"></label>
 
-                                            <div class="col-sm-9">
-                                                <input type="text" readonly asp-for="Affiliation" placeholder="Affiliation" class="col-xs-11 col-sm-8" />
+                                            <div>
+                                                <input type="text" readonly asp-for="FieldOfActivity" placeholder="FieldOfActivity" class="inputRead " />
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label class="col-sm-3 control-label no-padding-right" for="AffiliationLogo" asp-for="AffiliationLogo"></label>
+                                        <div class="myFormGroup">
+                                            <label class="control-label no-padding-right" for="Adress" asp-for="Adress"></label>
 
-                                            <div class="col-sm-9">
-                                                <input type="text" readonly asp-for="AffiliationLogo" placeholder="AffiliationLogo" class="col-xs-11 col-sm-8" />
+                                            <div>
+                                                <input type="text" readonly asp-for="Adress" placeholder="Adress" class="inputRead " />
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label class="col-sm-3 control-label no-padding-right" for="FieldOfActivity" asp-for="FieldOfActivity"></label>
+                                        <div class="myFormGroup">
+                                            <label class="control-label no-padding-right" for="PostalCode" asp-for="PostalCode"></label>
 
-                                            <div class="col-sm-9">
-                                                <input type="text" readonly asp-for="FieldOfActivity" placeholder="FieldOfActivity" class="col-xs-11 col-sm-8" />
+                                            <div>
+                                                <input type="text" readonly asp-for="PostalCode" placeholder="PostalCode" class="inputRead " />
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label class="col-sm-3 control-label no-padding-right" for="Adress" asp-for="Adress"></label>
+                                        <div class="myFormGroup">
+                                            <label class="control-label no-padding-right" for="City" asp-for="City"></label>
 
-                                            <div class="col-sm-9">
-                                                <input type="text" readonly asp-for="Adress" placeholder="Adress" class="col-xs-11 col-sm-8" />
+                                            <div>
+                                                <input type="text" readonly asp-for="City" placeholder="City" class="inputRead " />
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label class="col-sm-3 control-label no-padding-right" for="PostalCode" asp-for="PostalCode"></label>
+                                        <div class="myFormGroup">
+                                            <label class="control-label no-padding-right" for="Country" asp-for="Country"></label>
+                                            <div hidden id="countrySelect">
 
-                                            <div class="col-sm-9">
-                                                <input type="text" readonly asp-for="PostalCode" placeholder="PostalCode" class="col-xs-11 col-sm-8" />
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-sm-3 control-label no-padding-right" for="City" asp-for="City"></label>
-
-                                            <div class="col-sm-9">
-                                                <input type="text" readonly asp-for="City" placeholder="City" class="col-xs-11 col-sm-8" />
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-sm-3 control-label no-padding-right" for="Country" asp-for="Country"></label>
-
-                                            <div class="col-sm-9">
-                                                <input type="text" readonly id="textCountry" asp-for="Country" placeholder="Country" class="col-xs-11 col-sm-8" />
-                                            </div>
-                                            <div class="col-sm-9" hidden id="countrySelect">
-
-                                                <select class="col-xs-11 col-sm-8" asp-for="Country">
+                                                <select class="inputRead " asp-for="Country">
                                                     <option>Tunisia</option>
                                                     <option>Côte d'Ivoire</option>
                                                     <option>France</option>
                                                 </select>
                                             </div>
+                                            <div>
+                                                <input type="text" readonly asp-for="Country" placeholder="Country" class="inputRead " id="textCountry" />
+                                            </div>
+                                        </div>
+                                        <div class="myFormGroup">
+                                            <label class="control-label no-padding-right" for="PrefixDB" asp-for="PrefixDB"></label>
+
+                                            <div>
+                                                <input type="text" readonly asp-for="PrefixDB" placeholder="PrefixDB" />
+                                            </div>
+                                        </div>
+                                        <div class="myFormGroup">
+                                            <label class="control-label no-padding-right" for="PrefixFolder" asp-for="PrefixFolder"></label>
+
+                                            <div>
+                                                <input type="text" readonly asp-for="PrefixFolder" placeholder="PrefixFolder" />
+                                            </div>
                                         </div>
 
                                     </div>
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label class="col-sm-3 control-label no-padding-right" for="Email" asp-for="Email"></label>
+                                    <div>
+                                        <div class="myFormGroup">
+                                            <label class="control-label no-padding-right" for="Email" asp-for="Email"></label>
 
-                                            <div class="col-sm-9">
-                                                <input type="text" readonly asp-for="Email" placeholder="Email" class="col-xs-11 col-sm-8" />
+                                            <div>
+                                                <input type="text" readonly asp-for="Email" placeholder="Email" class="inputRead " />
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label class="col-sm-3 control-label no-padding-right" for="Phone" asp-for="Phone"></label>
+                                        <div class="myFormGroup">
+                                            <label class="control-label no-padding-right" for="Phone" asp-for="Phone"></label>
 
-                                            <div class="col-sm-9">
-                                                <input type="text" readonly asp-for="Phone" placeholder="Phone" class="col-xs-11 col-sm-8" />
+                                            <div>
+                                                <input type="text" readonly asp-for="Phone" placeholder="Phone" class="inputRead " />
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label class="col-sm-3 control-label no-padding-right" for="PersonToContact" asp-for="PersonToContact"></label>
+                                        <div class="myFormGroup">
+                                            <label class="control-label no-padding-right" for="PersonToContact" asp-for="PersonToContact"></label>
 
-                                            <div class="col-sm-9">
-                                                <input type="text" readonly asp-for="PersonToContact" placeholder="PersonToContact" class="col-xs-11 col-sm-8" />
+                                            <div>
+                                                <input type="text" readonly asp-for="PersonToContact" placeholder="PersonToContact" class="inputRead " />
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label class="col-sm-3 control-label no-padding-right" for="ContactMail" asp-for="ContactMail"></label>
+                                        <div class="myFormGroup">
+                                            <label class="control-label no-padding-right" for="ContactMail" asp-for="ContactMail"></label>
 
-                                            <div class="col-sm-9">
-                                                <input type="text" readonly asp-for="ContactMail" placeholder="ContactMail" class="col-xs-11 col-sm-8" />
+                                            <div>
+                                                <input type="text" readonly asp-for="ContactMail" placeholder="ContactMail" class="inputRead " />
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label class="col-sm-3 control-label no-padding-right" for="ContactPhone" asp-for="ContactPhone"></label>
+                                        <div class="myFormGroup">
+                                            <label class="control-label no-padding-right" for="ContactPhone" asp-for="ContactPhone"></label>
 
-                                            <div class="col-sm-9">
-                                                <input type="text" readonly asp-for="ContactPhone" placeholder="ContactPhone" class="col-xs-11 col-sm-8" />
+                                            <div>
+                                                <input type="text" readonly asp-for="ContactPhone" placeholder="ContactPhone" class="inputRead " />
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label class="col-sm-3 control-label no-padding-right" for="ContactPosition" asp-for="ContactPosition"></label>
+                                        <div class="myFormGroup">
+                                            <label class="control-label no-padding-right" for="ContactPosition" asp-for="ContactPosition"></label>
 
-                                            <div class="col-sm-9">
-                                                <input type="text" readonly asp-for="ContactPosition" placeholder="ContactPosition" class="col-xs-11 col-sm-8" />
+                                            <div>
+                                                <input type="text" readonly asp-for="ContactPosition" placeholder="ContactPosition" class="inputRead " />
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label class="col-sm-3 control-label no-padding-right" for="AccountType" asp-for="AccountType"></label>
+                                        <div class="myFormGroup">
+                                            <label class="control-label no-padding-right" for="AccountType" asp-for="AccountType"></label>
 
-                                            <div class="col-sm-9">
-                                                <input type="text" id="typeText" readonly asp-for="AccountType" placeholder="Type Account" class="col-xs-11 col-sm-8" />
-                                            </div>
-                                            <div class="col-sm-9" hidden id="typeSelect">
+                                            <div hidden id="typeSelect">
 
-                                                <select class="col-xs-11 col-sm-8" asp-for="AccountType">
+                                                <select class="inputRead " asp-for="AccountType">
                                                     <option value="essai">Essai</option>
                                                     <option value="client">Client</option>
                                                 </select>
                                             </div>
-
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-sm-3 control-label no-padding-right" for="AccountStatus" asp-for="AccountStatus"></label>
-
-                                            <div class="col-sm-9">
-                                                <input type="text" id="statusText" readonly asp-for="AccountStatus" placeholder="Account Status" class="col-xs-11 col-sm-8" />
+                                            <div>
+                                                <input type="text" id="typeText" readonly asp-for="AccountType" placeholder="Type Account" class="inputRead " />
                                             </div>
 
-                                            <div class="col-sm-9" hidden id="statusSelect">
+                                        </div>
+                                        <div class="myFormGroup">
+                                            <label class="control-label no-padding-right" for="AccountStatus" asp-for="AccountStatus"></label>
 
-                                                <select class="col-xs-11 col-sm-8" asp-for="AccountStatus">
+                                            <div hidden id="statusSelect">
+
+                                                <select class="inputRead " asp-for="AccountStatus">
                                                     <option value="inactive">Inactive</option>
                                                     <option value="active">Active</option>
                                                 </select>
                                             </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-sm-3 control-label no-padding-right" for="ParDiffusionEmail" asp-for="ParDiffusionEmail"></label>
+                                            <div>
+                                                <input type="text" id="statusText" readonly asp-for="AccountStatus" placeholder="Account Status" class="inputRead " />
+                                            </div>
 
-                                            <div class="col-sm-9">
-                                                <input type="text" readonly asp-for="ParDiffusionEmail" placeholder="ParDiffusionEmail" class="col-xs-11 col-sm-8" />
+                                        </div>
+                                        <div class="myFormGroup">
+                                            <label class="control-label" for="ParDiffusionEmail" asp-for="ParDiffusionEmail"></label>
+
+                                            <div>
+                                                <input type="text" readonly asp-for="ParDiffusionEmail" placeholder="ParDiffusionEmail" class="inputRead " />
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label class="col-sm-3 control-label no-padding-right" for="ParDiffusionEmailPW" asp-for="ParDiffusionEmailPW"></label>
+                                        <div class="myFormGroup">
+                                            <label class="control-label" for="ParDiffusionEmailPW" asp-for="ParDiffusionEmailPW"></label>
 
-                                            <div class="col-sm-9">
-                                                <input type="text" readonly asp-for="ParDiffusionEmailPW" placeholder="ParDiffusionEmailPW" class="col-xs-11 col-sm-8" />
+                                            <div>
+                                                <input type="text" readonly asp-for="ParDiffusionEmailPW" placeholder="ParDiffusionEmailPW" class="inputRead " />
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label class="col-sm-3 control-label no-padding-right" for="ParOutgoingMailChar" asp-for="ParOutgoingMailChar"></label>
+                                        <div class="myFormGroup">
+                                            <label class="control-label" for="ParOutgoingMailChar" asp-for="ParOutgoingMailChar"></label>
 
-                                            <div class="col-sm-9">
-                                                <input type="text" readonly asp-for="ParOutgoingMailChar" placeholder="ParOutgoingMailChar" class="col-xs-11 col-sm-8" />
+                                            <div>
+                                                <input type="text" readonly asp-for="ParOutgoingMailChar" placeholder="ParOutgoingMailChar" class="inputRead " />
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label class="col-sm-3 control-label no-padding-right" for="ParIngoingMailChar" asp-for="ParIngoingMailChar"></label>
+                                        <div class="myFormGroup">
+                                            <label class="control-label" for="ParIngoingMailChar" asp-for="ParIngoingMailChar"></label>
 
-                                            <div class="col-sm-9">
-                                                <input type="text" readonly asp-for="ParIngoingMailChar" placeholder="ParIngoingMailChar" class="col-xs-11 col-sm-8" />
+                                            <div>
+                                                <input type="text" readonly asp-for="ParIngoingMailChar" placeholder="ParIngoingMailChar" class="inputRead " />
                                             </div>
                                         </div>
 
@@ -472,59 +493,52 @@
 
                                 <div class="hr hr-24"></div>
 
-
-
-                            </form>
-                        </div>
-
-                        <div id="usersOrg" class="tab-pane">
-
-                            <div>
-                                <table id="dynamic-table" class="table table-striped table-bordered table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th class="hidden-480">Nom</th>
-                                            <th class="hidden-480">Email</th>
-                                            <th class="hidden-480">Role</th>
-                                            <th class="hidden-480">Last Login</th>
-
-                                        </tr>
-                                    </thead>
-
-                                    <tbody id="tbodyListeDemande">
-
-                                        @{
-                                            foreach (var user in ViewBag.AllUsers)
-                                            {
-                                                <tr>
-
-
-
-                                                    <td>
-                                                        @user.Name
-                                                    </td>
-                                                    <td>
-                                                        @user.Email
-                                                    </td>
-
-                                                    <td>
-                                                        @user.Role
-                                                    </td>
-                                                    <td class="hidden-480">
-                                                        @user.LastLoginDate
-                                                    </td>
-                                                </tr>
-
-                                            }
-                                        }
-                                    </tbody>
-                                </table>
                             </div>
+
+                            <div id="usersOrg" class="tab-pane">
+
+                                <div>
+                                    <table id="dynamic-table" class="table table-striped table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th class="hidden-480">Nom</th>
+                                                <th class="hidden-480">Email</th>
+                                                <th class="hidden-480">Role</th>
+
+                                            </tr>
+                                        </thead>
+
+                                        <tbody id="tbodyListeDemande">
+
+                                            @{
+                                                foreach (var user in ViewBag.AllUsers)
+                                                {
+                                                    <tr>
+
+
+
+                                                        <td>
+                                                            @user.Name
+                                                        </td>
+                                                        <td>
+                                                            @user.Email
+                                                        </td>
+
+                                                        <td>
+                                                            @user.Role
+                                                        </td>
+                                                    </tr>
+
+                                                }
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
                         </div>
-
                     </div>
-                </div>
-
+                </form>
             }
             else
             {
@@ -534,7 +548,8 @@
                             <span class="blue bigger-125">
                                 <i class="ace-icon fa fa-sitemap"></i>
                             </span>
-                            @MessageResponse
+                            <span style="white-space: pre-line; ">@MessageResponse</span>
+
                         </h1>
 
                         <hr />

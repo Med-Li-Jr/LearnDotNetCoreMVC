@@ -33,6 +33,7 @@ D:\LearningPaths\DotNet\LearnDotNetCoreMVC\LearnDotNetCoreMVC\obj\Debug\net5.0\R
 D:\LearningPaths\DotNet\LearnDotNetCoreMVC\LearnDotNetCoreMVC\obj\Debug\net5.0\Razor\Views\Shared\Error.cshtml.g.cs
 D:\LearningPaths\DotNet\LearnDotNetCoreMVC\LearnDotNetCoreMVC\obj\Debug\net5.0\Razor\Views\Shared\_Layout.cshtml.g.cs
 D:\LearningPaths\DotNet\LearnDotNetCoreMVC\LearnDotNetCoreMVC\obj\Debug\net5.0\Razor\Views\Shared\_LayoutNotLogged.cshtml.g.cs
+D:\LearningPaths\DotNet\LearnDotNetCoreMVC\LearnDotNetCoreMVC\obj\Debug\net5.0\Razor\Views\Shared\_ModalResponse.cshtml.g.cs
 D:\LearningPaths\DotNet\LearnDotNetCoreMVC\LearnDotNetCoreMVC\obj\Debug\net5.0\Razor\Views\Shared\_ValidationScriptsPartial.cshtml.g.cs
 D:\LearningPaths\DotNet\LearnDotNetCoreMVC\LearnDotNetCoreMVC\obj\Debug\net5.0\Razor\Views\_ViewImports.cshtml.g.cs
 D:\LearningPaths\DotNet\LearnDotNetCoreMVC\LearnDotNetCoreMVC\obj\Debug\net5.0\Razor\Views\_ViewStart.cshtml.g.cs
@@ -45,4 +46,3 @@ D:\LearningPaths\DotNet\LearnDotNetCoreMVC\LearnDotNetCoreMVC\obj\Debug\net5.0\r
 D:\LearningPaths\DotNet\LearnDotNetCoreMVC\LearnDotNetCoreMVC\obj\Debug\net5.0\LearnDotNetCoreMVC.pdb
 D:\LearningPaths\DotNet\LearnDotNetCoreMVC\LearnDotNetCoreMVC\obj\Debug\net5.0\LearnDotNetCoreMVC.genruntimeconfig.cache
 D:\LearningPaths\DotNet\LearnDotNetCoreMVC\LearnDotNetCoreMVC\obj\Debug\net5.0\LearnDotNetCoreMVC.csprojAssemblyReference.cache
-D:\LearningPaths\DotNet\LearnDotNetCoreMVC\LearnDotNetCoreMVC\obj\Debug\net5.0\Razor\Views\Shared\_ModalResponse.cshtml.g.cs

@@ -53,7 +53,7 @@
                                             <tr>
 
                                                 <td>
-                                                    <a asp-route="detailOrganization" asp-route-id="@organization.Id">@organization.NameFr</a>
+                                                    <a asp-route="detailOrganization" asp-route-value="@organization.Id">@organization.NameFr</a>
                                                 </td>
                                                 <td>
                                                     @organization.Email
@@ -82,7 +82,7 @@
                                                 </td>
                                                 <td>
                                                     <div>
-                                                        <a class="blue" asp-route="detailOrganization" asp-route-id="@organization.Id">
+                                                        <a class="blue" asp-route="detailOrganization" asp-route-value="@organization.Id">
                                                             <i class="ace-icon fa fa-search-plus bigger-130"></i>
                                                         </a>
                                                         <a class="red" href="#"

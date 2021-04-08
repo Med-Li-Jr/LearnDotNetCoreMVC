@@ -9,6 +9,6 @@ namespace LearnDotNetCoreMVC.Models
     {
         public string Message { get; set; }
         public bool Success { get; set; }
-        public Object Data { get; set; }
+        public Object Data { get; set; } 
     }
 }

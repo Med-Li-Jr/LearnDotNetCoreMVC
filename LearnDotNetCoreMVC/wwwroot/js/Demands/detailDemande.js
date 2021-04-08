@@ -1,7 +1,6 @@
-﻿function refuserModal(idDemande) {
-    $("#modal-form-confirm-refuser").modal("toggle");
+﻿function responseModal(action) {
+    $("#" + action).modal("toggle");
 }
-
 function deleteModal(idDemande) {
     var htmlValue = `
 <form method="post" action="/@ViewContext.RouteData.Values["controller"].ToString()/` + idDemande + `">

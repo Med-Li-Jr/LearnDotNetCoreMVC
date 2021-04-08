@@ -30,8 +30,15 @@ namespace LearnDotNetCoreMVC.Models.Entities
         public string ParIngoingMailChar { get; set; }
         public string AccountStatus { get; set; }
         public string AccountType { get; set; }
+        public string PrefixDB { get; set; }
+        public string PrefixFolder { get; set; }
         public Organization(){}
-        public Organization(long Id, string NameFr,string NameAr,string Acronym,string OrganisationLogo,string Affiliation,string AffiliationLogo,string FieldOfActivity,string Adress,string PostalCode,string City,string Country,string Email,string Phone,string PersonToContact,string ContactMail,string ContactPhone,string ContactPosition,string ParDiffusionEmail,string ParDiffusionEmailPW,string ParOutgoingMailChar, string ParIngoingMailChar,string AccountStatus,string AccountType) {
+        public Organization(long Id, string NameFr,string NameAr,string Acronym,string OrganisationLogo,string Affiliation,
+            string AffiliationLogo,string FieldOfActivity,string Adress,string PostalCode,
+            string City,string Country,string Email,string Phone,string PersonToContact,
+            string ContactMail,string ContactPhone,string ContactPosition,string ParDiffusionEmail,string ParDiffusionEmailPW,
+            string ParOutgoingMailChar, string ParIngoingMailChar,string AccountStatus,string AccountType, 
+            string PrefixDB, string PrefixFolder) {
 
             this.Id = Id;
             this.NameFr = NameFr;
@@ -57,6 +64,8 @@ namespace LearnDotNetCoreMVC.Models.Entities
             this.ParIngoingMailChar = ParIngoingMailChar;
             this.AccountStatus = AccountStatus;
             this.AccountType = AccountType;
+            this.PrefixDB = PrefixDB;
+            this.PrefixFolder = PrefixFolder;
         }
     }
 }
