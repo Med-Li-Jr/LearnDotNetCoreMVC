@@ -149,6 +149,13 @@
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\Backup\DSS-GBO-Database\" />
+    <Folder Include="wwwroot\Backup\UploadDocument\" />
+    <Folder Include="wwwroot\Mails\" />
   </ItemGroup>
 
 </Project>

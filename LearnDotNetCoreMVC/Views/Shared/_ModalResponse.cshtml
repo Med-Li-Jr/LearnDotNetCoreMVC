@@ -14,12 +14,18 @@
             <div class="modal-body">
                 <h5>@MessageResponse</h5>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <div class="modal-footer"> 
+                <a id="btnClose" class="btn btn-secondary">Close</a>
             </div>
         </div>
-    </div>
+    </div> 
 </div>
+
+<script defer>
+    let btnClose = document.getElementById("btnClose");
+    btnClose.setAttribute("href", location.origin + location.pathname)
+    console.log(location.pathname.split("/")[1], location)
+</script>
 }
 
 

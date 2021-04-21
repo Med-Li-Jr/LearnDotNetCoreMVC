@@ -83,8 +83,7 @@ namespace LearnDotNetCoreMVC.Controllers
                         if (responseAPI != null)
                         {
                             HasError = "" + !responseAPI.Success;
-                            if (!responseAPI.Success)
-                                messageError = responseAPI.Message;
+                            messageError = responseAPI.Message;
                         }
                         else
                         {
@@ -159,8 +158,7 @@ namespace LearnDotNetCoreMVC.Controllers
                     if (responseAPI != null)
                     {
                         HasError = "" + !responseAPI.Success;
-                        if (!responseAPI.Success)
-                            messageError = responseAPI.Message;
+                        messageError = responseAPI.Message;
                     }
                     else
                     {

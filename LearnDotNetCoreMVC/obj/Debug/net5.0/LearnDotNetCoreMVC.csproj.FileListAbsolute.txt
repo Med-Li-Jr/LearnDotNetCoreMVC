@@ -10,6 +10,13 @@ D:\LearningPaths\DotNet\LearnDotNetCoreMVC\LearnDotNetCoreMVC\bin\Debug\net5.0\L
 D:\LearningPaths\DotNet\LearnDotNetCoreMVC\LearnDotNetCoreMVC\bin\Debug\net5.0\LearnDotNetCoreMVC.Views.dll
 D:\LearningPaths\DotNet\LearnDotNetCoreMVC\LearnDotNetCoreMVC\bin\Debug\net5.0\LearnDotNetCoreMVC.Views.pdb
 D:\LearningPaths\DotNet\LearnDotNetCoreMVC\LearnDotNetCoreMVC\bin\Debug\net5.0\Newtonsoft.Json.dll
+D:\LearningPaths\DotNet\LearnDotNetCoreMVC\LearnDotNetCoreMVC\bin\Debug\net5.0\System.Data.SqlClient.dll
+D:\LearningPaths\DotNet\LearnDotNetCoreMVC\LearnDotNetCoreMVC\bin\Debug\net5.0\runtimes\win-arm64\native\sni.dll
+D:\LearningPaths\DotNet\LearnDotNetCoreMVC\LearnDotNetCoreMVC\bin\Debug\net5.0\runtimes\win-x64\native\sni.dll
+D:\LearningPaths\DotNet\LearnDotNetCoreMVC\LearnDotNetCoreMVC\bin\Debug\net5.0\runtimes\win-x86\native\sni.dll
+D:\LearningPaths\DotNet\LearnDotNetCoreMVC\LearnDotNetCoreMVC\bin\Debug\net5.0\runtimes\unix\lib\netcoreapp2.1\System.Data.SqlClient.dll
+D:\LearningPaths\DotNet\LearnDotNetCoreMVC\LearnDotNetCoreMVC\bin\Debug\net5.0\runtimes\win\lib\netcoreapp2.1\System.Data.SqlClient.dll
+D:\LearningPaths\DotNet\LearnDotNetCoreMVC\LearnDotNetCoreMVC\obj\Debug\net5.0\LearnDotNetCoreMVC.csprojAssemblyReference.cache
 D:\LearningPaths\DotNet\LearnDotNetCoreMVC\LearnDotNetCoreMVC\obj\Debug\net5.0\LearnDotNetCoreMVC.GeneratedMSBuildEditorConfig.editorconfig
 D:\LearningPaths\DotNet\LearnDotNetCoreMVC\LearnDotNetCoreMVC\obj\Debug\net5.0\LearnDotNetCoreMVC.AssemblyInfoInputs.cache
 D:\LearningPaths\DotNet\LearnDotNetCoreMVC\LearnDotNetCoreMVC\obj\Debug\net5.0\LearnDotNetCoreMVC.AssemblyInfo.cs
@@ -45,4 +52,3 @@ D:\LearningPaths\DotNet\LearnDotNetCoreMVC\LearnDotNetCoreMVC\obj\Debug\net5.0\L
 D:\LearningPaths\DotNet\LearnDotNetCoreMVC\LearnDotNetCoreMVC\obj\Debug\net5.0\ref\LearnDotNetCoreMVC.dll
 D:\LearningPaths\DotNet\LearnDotNetCoreMVC\LearnDotNetCoreMVC\obj\Debug\net5.0\LearnDotNetCoreMVC.pdb
 D:\LearningPaths\DotNet\LearnDotNetCoreMVC\LearnDotNetCoreMVC\obj\Debug\net5.0\LearnDotNetCoreMVC.genruntimeconfig.cache
-D:\LearningPaths\DotNet\LearnDotNetCoreMVC\LearnDotNetCoreMVC\obj\Debug\net5.0\LearnDotNetCoreMVC.csprojAssemblyReference.cache
